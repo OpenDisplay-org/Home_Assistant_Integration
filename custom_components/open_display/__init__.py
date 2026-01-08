@@ -686,10 +686,16 @@ async def _send_welcome_image(
         color_scheme = metadata.color_scheme
 
         colors = list(color_scheme.palette.colors.keys())
+        use_blue_logo = "blue" in colors
         ha_logo_url = (
             "https://openepaperlink.org/HA_blue.png"
-            if "blue" in colors
+            if use_blue_logo
             else "https://openepaperlink.org/HA_black.png"
+        )
+        od_logo_url = (
+            "https://openepaperlink.org/OpenDisplay.png"
+            if use_blue_logo
+            else "https://openepaperlink.org/OpenDisplay_black.png"
         )
 
         title_y_pct = 10
@@ -734,7 +740,7 @@ async def _send_welcome_image(
             # OpenDisplay logo (right side)
             {
                 "type": "dlimg",
-                "url": "https://openepaperlink.org/logo_black.png",
+                "url": od_logo_url,
                 "x": int(width * 0.65 - logo_size // 2),
                 "y": int(height * logo_y_pct / 100 - logo_size // 2),
                 "xsize": logo_size,
