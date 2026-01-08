@@ -50,7 +50,7 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
     context between user interactions.
     """
 
-    VERSION = 4
+    VERSION = 1
 
     def __init__(self) -> None:
         """Initialize flow."""

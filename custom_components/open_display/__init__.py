@@ -132,145 +132,145 @@ async def async_remove_invalid_ble_entities(
     return removed_entities
 
 
-async def async_migrate_entry(hass: HomeAssistant, config_entry: ConfigEntry) -> bool:
-    """
-    Migrate old config entries to new schema version.
-
-    Version 2 -> 3: Add device type and protocol type fields to BLE entries and fix boolean rotate buffer.
-
-    Version 3 -> 4: Fix color support.
-
-    Returns:
-        bool: True if migration was successful, False otherwise.
-    """
-    _LOGGER.debug(
-        "Migrating config entry from version %s.%s",
-        config_entry.version,
-        config_entry.minor_version,
-    )
-    if config_entry.version == 2:
-        new_data = {**config_entry.data}
-
-        # Check if this is a BLE entry
-        if "mac_address" in config_entry.data:
-            if "device_type" not in config_entry.data:
-                new_data["device_type"] = "ble"
-                _LOGGER.info(
-                    "Adding device_type='ble' to BLE entry %s",
-                    new_data.get("name", new_data.get("mac_address"))
-                )
-
-            if "protocol_type" not in config_entry.data:
-                new_data["protocol_type"] = "atc"
-                _LOGGER.info(
-                    "Adding protocol_type='atc' to BLE entry %s",
-                    new_data.get("name", new_data.get("mac_address"))
-                )
-
-            if "device_metadata" in new_data:
-                device_metadata = new_data["device_metadata"]
-
-                if "oepl_config" in device_metadata and "open_display_config" not in device_metadata:
-                    device_metadata = {
-                        **device_metadata,
-                        "open_display_config": device_metadata["oepl_config"],
-                    }
-                    new_data["device_metadata"] = device_metadata
-
-                if "open_display_config" not in device_metadata and "rotatebuffer" in device_metadata:
-                    rotatebuffer_value = device_metadata["rotatebuffer"]
-
-                    if isinstance(rotatebuffer_value, bool):
-                        new_metadata = {**device_metadata, "rotatebuffer": 1}
-                        new_data["device_metadata"] = new_metadata
-
-                        _LOGGER.info(
-                            "Converting rotatebuffer from %s (bool) to %s (int) for BLE entry %s",
-                            rotatebuffer_value,
-                            new_metadata["rotatebuffer"],
-                            new_data.get("name", new_data.get("mac_address"))
-                        )
-
-        # Update config entry with migrated data and new version
-        hass.config_entries.async_update_entry(
-            config_entry,
-            data=new_data,
-            version=3,
-            minor_version=0
-        )
-        _LOGGER.info("Successfully migrated config entry to version 3")
-
-    if config_entry.version == 3:
-        new_data = {**config_entry.data}
-
-        # Only migrate BLE entries
-        if "mac_address" in config_entry.data:
-            device_metadata = dict(new_data.get("device_metadata", {}))
-
-            if "oepl_config" in device_metadata and "open_display_config" not in device_metadata:
-                device_metadata["open_display_config"] = device_metadata["oepl_config"]
-                new_data["device_metadata"] = device_metadata
-
-            # OpenDisplay: No migration needed - color scheme is already in open_display_config.displays[0]
-            # ATC: Need to add color_scheme at root level
-
-            if "open_display_config" not in device_metadata and "color_scheme" not in device_metadata:
-                hw_type = device_metadata.get("hw_type", 0)
-                tag_types_manager = await get_tag_types_manager(hass)
-
-                if tag_types_manager.is_in_hw_map(hw_type):
-                    tag_type = await tag_types_manager.get_tag_info(hw_type)
-                    color_table = tag_type.color_table
-
-                    _LOGGER.info(
-                        "Migrating color support for BLE entry %s based on hw_type=%s with colors: %s",
-                        new_data.get("name", new_data.get("mac_address")),
-                        hw_type,
-                        color_table
-                    )
-
-                    if 'yellow' in color_table and 'red' in color_table:
-                        color_scheme = 3  # BWRY
-                    elif 'yellow' in color_table:
-                        color_scheme = 2  # BWY
-                    elif 'red' in color_table:
-                        color_scheme = 1  # BWR
-                    else:
-                        color_scheme = 0  # BW
-
-                    _LOGGER.info(
-                        "Determined color_scheme=%s for BLE entry %s",
-                        color_scheme,
-                        new_data.get("name", new_data.get("mac_address"))
-                    )
-                else:
-                    # Fallback from old color_support string
-                    cs = device_metadata.get("color_support", "mono")
-                    color_scheme = {"red": 1, "yellow": 2, "bwry": 3}.get(cs, 0)
-                    _LOGGER.info(
-                        "Fallback color_scheme=%s for BLE entry %s from color_support='%s'",
-                        color_scheme,
-                        new_data.get("name", new_data.get("mac_address")),
-                        cs
-                    )
-
-                device_metadata["color_scheme"] = color_scheme
-                new_data["device_metadata"] = device_metadata
-
-                _LOGGER.info(
-                    "Adding color_scheme=%s to BLE entry %s",
-                    color_scheme,
-                    new_data.get("name", new_data.get("mac_address"))
-                )
-
-        hass.config_entries.async_update_entry(
-            config_entry,
-            data=new_data,
-            version=4
-        )
-        _LOGGER.info("Successfully migrated config entry to version 4")
-
-    return True
+# async def async_migrate_entry(hass: HomeAssistant, config_entry: ConfigEntry) -> bool:
+#     """
+#     Migrate old config entries to new schema version.
+#
+#     Version 2 -> 3: Add device type and protocol type fields to BLE entries and fix boolean rotate buffer.
+#
+#     Version 3 -> 4: Fix color support.
+#
+#     Returns:
+#         bool: True if migration was successful, False otherwise.
+#     """
+#     _LOGGER.debug(
+#         "Migrating config entry from version %s.%s",
+#         config_entry.version,
+#         config_entry.minor_version,
+#     )
+#     if config_entry.version == 2:
+#         new_data = {**config_entry.data}
+#
+#         # Check if this is a BLE entry
+#         if "mac_address" in config_entry.data:
+#             if "device_type" not in config_entry.data:
+#                 new_data["device_type"] = "ble"
+#                 _LOGGER.info(
+#                     "Adding device_type='ble' to BLE entry %s",
+#                     new_data.get("name", new_data.get("mac_address"))
+#                 )
+#
+#             if "protocol_type" not in config_entry.data:
+#                 new_data["protocol_type"] = "atc"
+#                 _LOGGER.info(
+#                     "Adding protocol_type='atc' to BLE entry %s",
+#                     new_data.get("name", new_data.get("mac_address"))
+#                 )
+#
+#             if "device_metadata" in new_data:
+#                 device_metadata = new_data["device_metadata"]
+#
+#                 if "oepl_config" in device_metadata and "open_display_config" not in device_metadata:
+#                     device_metadata = {
+#                         **device_metadata,
+#                         "open_display_config": device_metadata["oepl_config"],
+#                     }
+#                     new_data["device_metadata"] = device_metadata
+#
+#                 if "open_display_config" not in device_metadata and "rotatebuffer" in device_metadata:
+#                     rotatebuffer_value = device_metadata["rotatebuffer"]
+#
+#                     if isinstance(rotatebuffer_value, bool):
+#                         new_metadata = {**device_metadata, "rotatebuffer": 1}
+#                         new_data["device_metadata"] = new_metadata
+#
+#                         _LOGGER.info(
+#                             "Converting rotatebuffer from %s (bool) to %s (int) for BLE entry %s",
+#                             rotatebuffer_value,
+#                             new_metadata["rotatebuffer"],
+#                             new_data.get("name", new_data.get("mac_address"))
+#                         )
+#
+#         # Update config entry with migrated data and new version
+#         hass.config_entries.async_update_entry(
+#             config_entry,
+#             data=new_data,
+#             version=3,
+#             minor_version=0
+#         )
+#         _LOGGER.info("Successfully migrated config entry to version 3")
+#
+#     if config_entry.version == 3:
+#         new_data = {**config_entry.data}
+#
+#         # Only migrate BLE entries
+#         if "mac_address" in config_entry.data:
+#             device_metadata = dict(new_data.get("device_metadata", {}))
+#
+#             if "oepl_config" in device_metadata and "open_display_config" not in device_metadata:
+#                 device_metadata["open_display_config"] = device_metadata["oepl_config"]
+#                 new_data["device_metadata"] = device_metadata
+#
+#             # OpenDisplay: No migration needed - color scheme is already in open_display_config.displays[0]
+#             # ATC: Need to add color_scheme at root level
+#
+#             if "open_display_config" not in device_metadata and "color_scheme" not in device_metadata:
+#                 hw_type = device_metadata.get("hw_type", 0)
+#                 tag_types_manager = await get_tag_types_manager(hass)
+#
+#                 if tag_types_manager.is_in_hw_map(hw_type):
+#                     tag_type = await tag_types_manager.get_tag_info(hw_type)
+#                     color_table = tag_type.color_table
+#
+#                     _LOGGER.info(
+#                         "Migrating color support for BLE entry %s based on hw_type=%s with colors: %s",
+#                         new_data.get("name", new_data.get("mac_address")),
+#                         hw_type,
+#                         color_table
+#                     )
+#
+#                     if 'yellow' in color_table and 'red' in color_table:
+#                         color_scheme = 3  # BWRY
+#                     elif 'yellow' in color_table:
+#                         color_scheme = 2  # BWY
+#                     elif 'red' in color_table:
+#                         color_scheme = 1  # BWR
+#                     else:
+#                         color_scheme = 0  # BW
+#
+#                     _LOGGER.info(
+#                         "Determined color_scheme=%s for BLE entry %s",
+#                         color_scheme,
+#                         new_data.get("name", new_data.get("mac_address"))
+#                     )
+#                 else:
+#                     # Fallback from old color_support string
+#                     cs = device_metadata.get("color_support", "mono")
+#                     color_scheme = {"red": 1, "yellow": 2, "bwry": 3}.get(cs, 0)
+#                     _LOGGER.info(
+#                         "Fallback color_scheme=%s for BLE entry %s from color_support='%s'",
+#                         color_scheme,
+#                         new_data.get("name", new_data.get("mac_address")),
+#                         cs
+#                     )
+#
+#                 device_metadata["color_scheme"] = color_scheme
+#                 new_data["device_metadata"] = device_metadata
+#
+#                 _LOGGER.info(
+#                     "Adding color_scheme=%s to BLE entry %s",
+#                     color_scheme,
+#                     new_data.get("name", new_data.get("mac_address"))
+#                 )
+#
+#         hass.config_entries.async_update_entry(
+#             config_entry,
+#             data=new_data,
+#             version=4
+#         )
+#         _LOGGER.info("Successfully migrated config entry to version 4")
+#
+#     return True
 
 
 async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
