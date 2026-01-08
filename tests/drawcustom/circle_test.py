@@ -26,7 +26,7 @@ async def test_circle_filled(image_gen, mock_tag_info):
         }]
     }
 
-    with patch('custom_components.open_epaper_link.imagegen.ImageGen.get_tag_info',
+    with patch('custom_components.open_display.imagegen.ImageGen.get_tag_info',
                return_value=mock_tag_info):
         image_data = await generate_test_image(image_gen, service_data)
 
@@ -50,7 +50,7 @@ async def test_circle_outline(image_gen, mock_tag_info):
         }]
     }
 
-    with patch('custom_components.open_epaper_link.imagegen.ImageGen.get_tag_info',
+    with patch('custom_components.open_display.imagegen.ImageGen.get_tag_info',
                return_value=mock_tag_info):
         image_data = await generate_test_image(image_gen, service_data)
 
@@ -75,7 +75,7 @@ async def test_circle_percentage(image_gen, mock_tag_info):
         }]
     }
 
-    with patch('custom_components.open_epaper_link.imagegen.ImageGen.get_tag_info',
+    with patch('custom_components.open_display.imagegen.ImageGen.get_tag_info',
                return_value=mock_tag_info):
         image_data = await generate_test_image(image_gen, service_data)
 

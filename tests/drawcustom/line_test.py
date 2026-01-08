@@ -25,7 +25,7 @@ async def test_line_basic(image_gen, mock_tag_info):
         }]
     }
 
-    with patch('custom_components.open_epaper_link.imagegen.ImageGen.get_tag_info',
+    with patch('custom_components.open_display.imagegen.ImageGen.get_tag_info',
                return_value=mock_tag_info):
         image_data = await generate_test_image(image_gen, service_data)
 
@@ -50,7 +50,7 @@ async def test_line_custom(image_gen, mock_tag_info):
         }]
     }
 
-    with patch('custom_components.open_epaper_link.imagegen.ImageGen.get_tag_info',
+    with patch('custom_components.open_display.imagegen.ImageGen.get_tag_info',
                return_value=mock_tag_info):
         image_data = await generate_test_image(image_gen, service_data)
 
@@ -75,7 +75,7 @@ async def test_dashed_line_basic(image_gen, mock_tag_info):
         }]
     }
 
-    with patch('custom_components.open_epaper_link.imagegen.ImageGen.get_tag_info',
+    with patch('custom_components.open_display.imagegen.ImageGen.get_tag_info',
                return_value=mock_tag_info):
         image_data = await generate_test_image(image_gen, service_data)
 
@@ -102,7 +102,7 @@ async def test_dashed_line_custom_lengths(image_gen, mock_tag_info):
         }]
     }
 
-    with patch('custom_components.open_epaper_link.imagegen.ImageGen.get_tag_info',
+    with patch('custom_components.open_display.imagegen.ImageGen.get_tag_info',
                return_value=mock_tag_info):
         image_data = await generate_test_image(image_gen, service_data)
 
@@ -127,7 +127,7 @@ async def test_dashed_line_basic_vertical(image_gen, mock_tag_info):
         }]
     }
 
-    with patch('custom_components.open_epaper_link.imagegen.ImageGen.get_tag_info',
+    with patch('custom_components.open_display.imagegen.ImageGen.get_tag_info',
                return_value=mock_tag_info):
         image_data = await generate_test_image(image_gen, service_data)
         generated_img = Image.open(BytesIO(image_data))
@@ -153,7 +153,7 @@ async def test_dashed_line_diagonal(image_gen, mock_tag_info):
         }]
     }
 
-    with patch('custom_components.open_epaper_link.imagegen.ImageGen.get_tag_info',
+    with patch('custom_components.open_display.imagegen.ImageGen.get_tag_info',
                return_value=mock_tag_info):
         image_data = await generate_test_image(image_gen, service_data)
 

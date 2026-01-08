@@ -1,6 +1,6 @@
 # drawcustom
 
-With `drawcustom`, you can create an image in Home Assistant and send the rendered image to an OpenEpaperLink AP.
+With `drawcustom`, you can create an image in Home Assistant and send the rendered image to an OEPL AP.
 
 ## List of draw types
 - [Debug Grid](#debug_grid)
@@ -131,7 +131,7 @@ Custom fonts are supported for text elements. The integration provides several w
 The integration searches for fonts in these locations in order:
 
 1. **Custom font directories** (configured in the integration options)
-2. **Integration assets directory** (`custom_components/open_epaper_link/imagegen/assets`) - contains default fonts (`ppb.ttf`, `rbm.ttf`)
+2. **Integration assets directory** (`custom_components/open_display/imagegen/assets`) - contains default fonts (`ppb.ttf`, `rbm.ttf`)
 3. **Web directory** - (`/config/www/fonts/`)
 4. **Media directory** - (`/media/fonts/`)
 
@@ -167,7 +167,7 @@ These are always available and will be used as fallbacks if specified fonts cann
 You can add custom font directories in the integrations configuration:
 
 1. Go to **Settings** → **Devices & Services**
-2. Find the OpenEPaperLink integration and click **Configure**
+2. Find the OpenDisplay integration and click **Configure**
 3. Enter custom font directories, separated by semicolons (must be absolute paths)
    ```
    /config/custom/fonts;/usr/share/fonts;/home/homeassistant/fonts
