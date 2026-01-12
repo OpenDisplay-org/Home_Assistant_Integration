@@ -11,8 +11,8 @@ sys.modules['serial.tools'] = MagicMock()
 sys.modules['serial.tools.list_ports'] = MagicMock()
 sys.modules['homeassistant.components.bluetooth'] = MagicMock()
 from homeassistant.core import HomeAssistant
-from custom_components.open_display.imagegen import ImageGen
-from custom_components.open_display.const import DOMAIN
+from custom_components.opendisplay.imagegen import ImageGen
+from custom_components.opendisplay.const import DOMAIN
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
 BASE_IMG_PATH = os.path.join(current_dir, "test_images")
@@ -70,13 +70,13 @@ def image_gen(mock_hass):
     """Create an ImageGen instance with mocked Home Assistant."""
     # Find the real font paths in the integration directory
     integration_dir = os.path.dirname(os.path.dirname(current_dir))
-    component_dir = os.path.join(integration_dir, "custom_components", "open_display")
+    component_dir = os.path.join(integration_dir, "custom_components", "opendisplay")
 
     # Try different paths for finding the font directory
     possible_component_dirs = [
         component_dir,
         os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(current_dir))),
-                     "custom_components", "open_display"),
+                     "custom_components", "opendisplay"),
         # Add more possible locations if needed
     ]
 
@@ -104,7 +104,7 @@ def image_gen(mock_hass):
             print("Assets directory not found")
 
     # Create a patch for FontManager to avoid filesystem operations
-    with patch('custom_components.open_display.imagegen.FontManager', autospec=True) as MockFontManager:
+    with patch('custom_components.opendisplay.imagegen.FontManager', autospec=True) as MockFontManager:
         # Configure the mock FontManager
         font_manager_instance = MockFontManager.return_value
 
@@ -171,7 +171,7 @@ def save_image(image_bytes):
     with open(img_path, 'wb') as f:
         f.write(image_bytes)
 
-async def generate_test_image(image_gen: ImageGen, service_data, entity_id="open_display.test_tag"):
+async def generate_test_image(image_gen: ImageGen, service_data, entity_id="opendisplay.test_tag"):
     """Helper to generate test images with standard dimensions."""
     return  await image_gen.generate_custom_image(
         entity_id=entity_id,

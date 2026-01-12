@@ -26,7 +26,7 @@ async def test_text_basic(image_gen, mock_tag_info):
         }]
     }
 
-    with patch('custom_components.open_display.imagegen.ImageGen.get_tag_info',
+    with patch('custom_components.opendisplay.imagegen.ImageGen.get_tag_info',
                return_value=mock_tag_info):
         image_data = await generate_test_image(image_gen, service_data)
 
@@ -50,7 +50,7 @@ async def test_small_font_size(image_gen, mock_tag_info):
         }]
     }
 
-    with patch('custom_components.open_display.imagegen.ImageGen.get_tag_info',
+    with patch('custom_components.opendisplay.imagegen.ImageGen.get_tag_info',
                return_value=mock_tag_info):
         image_data = await generate_test_image(image_gen, service_data)
 
@@ -74,7 +74,7 @@ async def test_large_font_size(image_gen, mock_tag_info):
         }]
     }
 
-    with patch('custom_components.open_display.imagegen.ImageGen.get_tag_info',
+    with patch('custom_components.opendisplay.imagegen.ImageGen.get_tag_info',
                return_value=mock_tag_info):
         image_data = await generate_test_image(image_gen, service_data)
 
@@ -99,7 +99,7 @@ async def test_text_wrapping(image_gen, mock_tag_info):
         }]
     }
 
-    with patch('custom_components.open_display.imagegen.ImageGen.get_tag_info',
+    with patch('custom_components.opendisplay.imagegen.ImageGen.get_tag_info',
                return_value=mock_tag_info):
         image_data = await generate_test_image(image_gen, service_data)
 
@@ -124,7 +124,7 @@ async def test_text_wrapping_with_anchor(image_gen, mock_tag_info):
         }]
     }
 
-    with patch('custom_components.open_display.imagegen.ImageGen.get_tag_info',
+    with patch('custom_components.opendisplay.imagegen.ImageGen.get_tag_info',
                return_value=mock_tag_info):
         image_data = await generate_test_image(image_gen, service_data)
 
@@ -156,7 +156,7 @@ async def test_text_with_special_characters(image_gen, mock_tag_info):
             }]
     }
 
-    with patch('custom_components.open_display.imagegen.ImageGen.get_tag_info',
+    with patch('custom_components.opendisplay.imagegen.ImageGen.get_tag_info',
                return_value=mock_tag_info):
         image_data = await generate_test_image(image_gen, service_data)
 
@@ -190,7 +190,7 @@ async def test_text_color_markup(image_gen, mock_tag_info):
             }]
     }
 
-    with patch('custom_components.open_display.imagegen.ImageGen.get_tag_info',
+    with patch('custom_components.opendisplay.imagegen.ImageGen.get_tag_info',
                return_value=mock_tag_info):
         image_data = await generate_test_image(image_gen, service_data)
 
@@ -215,7 +215,7 @@ async def test_text_percentage(image_gen, mock_tag_info):
         }]
     }
 
-    with patch('custom_components.open_display.imagegen.ImageGen.get_tag_info',
+    with patch('custom_components.opendisplay.imagegen.ImageGen.get_tag_info',
                return_value=mock_tag_info):
         image_data = await generate_test_image(image_gen, service_data)
 
@@ -257,10 +257,10 @@ async def test_text_percentage(image_gen, mock_tag_info):
 #         ]
 #     }
 #
-#     with patch('custom_components.open_display.imagegen.ImageGen.get_tag_info',
+#     with patch('custom_components.opendisplay.imagegen.ImageGen.get_tag_info',
 #                return_value=mock_tag_info):
 #         image_data = await image_gen.generate_custom_image(
-#             "open_display.test_tag",
+#             "opendisplay.test_tag",
 #             service_data
 #         )
 #
@@ -306,7 +306,7 @@ async def test_text_anchors(image_gen, mock_tag_info):
         ]
     }
 
-    with patch('custom_components.open_display.imagegen.ImageGen.get_tag_info',
+    with patch('custom_components.opendisplay.imagegen.ImageGen.get_tag_info',
                return_value=mock_tag_info):
         image_data = await generate_test_image(image_gen, service_data)
 
@@ -341,7 +341,7 @@ async def test_text_mixed_fonts(image_gen, mock_tag_info):
         ]
     }
 
-    with patch('custom_components.open_display.imagegen.ImageGen.get_tag_info',
+    with patch('custom_components.opendisplay.imagegen.ImageGen.get_tag_info',
                return_value=mock_tag_info):
         image_data = await generate_test_image(image_gen, service_data)
 
@@ -365,7 +365,7 @@ async def test_text_empty_string(image_gen, mock_tag_info):
         }]
     }
 
-    with patch('custom_components.open_display.imagegen.ImageGen.get_tag_info',
+    with patch('custom_components.opendisplay.imagegen.ImageGen.get_tag_info',
                return_value=mock_tag_info):
         image_data = await generate_test_image(image_gen, service_data)
 
@@ -390,7 +390,7 @@ async def test_text_truncate(image_gen, mock_tag_info):
         }]
     }
 
-    with patch('custom_components.open_display.imagegen.ImageGen.get_tag_info',
+    with patch('custom_components.opendisplay.imagegen.ImageGen.get_tag_info',
                return_value=mock_tag_info):
         image_data = await generate_test_image(image_gen, service_data)
 
@@ -413,11 +413,11 @@ async def test_text_truncate(image_gen, mock_tag_info):
 #         }]
 #     }
 #
-#     with patch('custom_components.open_display.imagegen.ImageGen.get_tag_info',
+#     with patch('custom_components.opendisplay.imagegen.ImageGen.get_tag_info',
 #                return_value=mock_tag_info):
 #         with pytest.raises(HomeAssistantError) as exc_info:
 #             await image_gen.generate_custom_image(
-#                 "open_display.test_tag",
+#                 "opendisplay.test_tag",
 #                 service_data
 #             )
 #         assert "Element 1: Element type 'text' missing required fields: x" in str(exc_info.value)
@@ -437,10 +437,10 @@ async def test_text_truncate(image_gen, mock_tag_info):
 #         }]
 #     }
 #
-#     with patch('custom_components.open_display.imagegen.ImageGen.get_tag_info',
+#     with patch('custom_components.opendisplay.imagegen.ImageGen.get_tag_info',
 #                return_value=mock_tag_info):
 #         image_data = await image_gen.generate_custom_image(
-#             "open_display.test_tag",
+#             "opendisplay.test_tag",
 #             service_data
 #         )
 #

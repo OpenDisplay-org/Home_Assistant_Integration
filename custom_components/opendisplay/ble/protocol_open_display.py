@@ -247,7 +247,7 @@ class OpenDisplayProtocol(BLEProtocol):
         if len(chunk_data) < 4:
             raise ConfigValidationError(
                 translation_domain=DOMAIN,
-                translation_key="open_display_config_chunk_short",
+                translation_key="opendisplay_config_chunk_short",
                 translation_placeholders={"length": str(len(chunk_data))}
             )
 
@@ -257,7 +257,7 @@ class OpenDisplayProtocol(BLEProtocol):
         if chunk_num != 0:
             raise ConfigValidationError(
                 translation_domain=DOMAIN,
-                translation_key="open_display_expected_chunk_zero",
+                translation_key="opendisplay_expected_chunk_zero",
                 translation_placeholders={"chunk_num": str(chunk_num)}
             )
 
@@ -336,7 +336,7 @@ class OpenDisplayProtocol(BLEProtocol):
         if len(tlv_data) < 3:
             raise ConfigValidationError(
                 translation_domain=DOMAIN,
-                translation_key="open_display_config_too_short",
+                translation_key="opendisplay_config_too_short",
                 translation_placeholders={"length": str(len(tlv_data))}
             )
 
@@ -434,7 +434,7 @@ class OpenDisplayProtocol(BLEProtocol):
         if len(payload) < 2:
             raise ConfigValidationError(
                 translation_domain=DOMAIN,
-                translation_key="open_display_fw_response_short",
+                translation_key="opendisplay_fw_response_short",
                 translation_placeholders={"length": str(len(payload))}
             )
 
@@ -448,7 +448,7 @@ class OpenDisplayProtocol(BLEProtocol):
                 if len(payload) < 3 + sha_length:
                     raise ConfigValidationError(
                         translation_domain=DOMAIN,
-                        translation_key="open_display_fw_version_format",
+                        translation_key="opendisplay_fw_version_format",
                         translation_placeholders={ "sha_length": str(sha_length)}
                     )
                 sha_bytes = payload[3:3 + sha_length]

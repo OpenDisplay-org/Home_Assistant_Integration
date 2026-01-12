@@ -265,7 +265,7 @@
       "firmware": {
         "name": "Firmware"
       },
-      "open_display_ble_firmware": {
+      "opendisplay_ble_firmware": {
         "name": "Firmware OpenDisplay"
       }
     }
@@ -277,7 +277,7 @@
     }
   },
   "preview_features": {
-    "open_display_ble_updates": {
+    "opendisplay_ble_updates": {
       "name": "Atualizações de firmware OpenDisplay",
       "description": "Mostra uma entidade de atualização de firmware para tags OpenDisplay BLE comparando a versão instalada com o último release do OpenDisplay_BLE no GitHub. Instalação ainda não disponível."
     }
@@ -291,7 +291,7 @@
     "ap_failed_action_http": "Falha ao {action}: HTTP {status_code} - {response_text}.",
     "device_not_found": "Dispositivo {device_id} não encontrado.",
     "device_no_identifiers": "Nenhum identificador encontrado para o dispositivo {device_id}.",
-    "device_not_open_display": "O dispositivo {device_id} não é um dispositivo OpenDisplay.",
+    "device_not_opendisplay": "O dispositivo {device_id} não é um dispositivo OpenDisplay.",
     "no_targets_specified": "Nenhum dispositivo de destino especificado. Informe device_id, label_id ou area_id.",
     "ap_offline": "O AP OpenDisplay está offline. Verifique a conexão de rede e o status do AP.",
     "error_processing_device": "Erro inesperado ao processar o dispositivo {entity_id}: {error}.",
@@ -352,11 +352,11 @@
     "ble_timeout": "Nenhuma resposta recebida de {mac_address} em {timeout}s.",
     "ble_operation_failed": "Operação BLE {operation} falhou após {attempts} tentativas: {error}.",
     "ble_operation_retry": "Operação BLE {operation} falhou na tentativa {attempt}: {error}. Nova tentativa em {delay}s...",
-    "open_display_config_chunk_short": "Dados do chunk curtos demais: {length} bytes.",
-    "open_display_expected_chunk_zero": "Esperado o chunk 0, recebido o chunk {chunk_num}.",
-    "open_display_config_too_short": "Dados de configuração curtos demais: {length} bytes (mínimo {minimum}).",
-    "open_display_fw_response_short": "Resposta de firmware curta demais: {length} bytes.",
-    "open_display_fw_version_format": "Tamanho do SHA de firmware {sha_length} excede o payload ({payload_length} bytes).",
+    "opendisplay_config_chunk_short": "Dados do chunk curtos demais: {length} bytes.",
+    "opendisplay_expected_chunk_zero": "Esperado o chunk 0, recebido o chunk {chunk_num}.",
+    "opendisplay_config_too_short": "Dados de configuração curtos demais: {length} bytes (mínimo {minimum}).",
+    "opendisplay_fw_response_short": "Resposta de firmware curta demais: {length} bytes.",
+    "opendisplay_fw_version_format": "Tamanho do SHA de firmware {sha_length} excede o payload ({payload_length} bytes).",
     "tlv_section_too_short": "{section} requer {expected} bytes, recebido {actual}.",
     "tlv_data_too_short": "Dados de configuração curtos demais: {length} bytes (mínimo 2).",
     "tlv_crc_mismatch": "CRC32 não confere: esperado {expected_crc32}, obtido {actual_crc32}.",

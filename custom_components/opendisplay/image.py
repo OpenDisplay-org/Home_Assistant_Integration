@@ -265,7 +265,7 @@ class OpenDisplayBLEImage(OpenDisplayBLEEntity, ImageEntity):
         OpenDisplayBLEEntity.__init__(self, mac_address, name, entry)
         self._device_metadata = device_metadata
         self._attr_translation_key = "content"
-        self._attr_unique_id = f"open_display_ble_{mac_address}_display_content"
+        self._attr_unique_id = f"opendisplay_ble_{mac_address}_display_content"
         self._attr_content_type = "image/jpeg"
         self._cached_image: bytes | None = None
         self._last_updated: datetime | None = None

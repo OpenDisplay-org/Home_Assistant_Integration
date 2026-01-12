@@ -153,7 +153,7 @@ async def async_attach_trigger(hass, config, action, trigger_info):
 
     Sets up an event listener that will call the provided action
     when the specified trigger event occurs. The trigger is implemented
-    as an event listener for the 'open_display_event' event type
+    as an event listener for the 'opendisplay_event' event type
     with filtering for the specific device ID and trigger type.
 
     When a tag reports an event (e.g., button press), the hub converts
@@ -171,7 +171,7 @@ async def async_attach_trigger(hass, config, action, trigger_info):
     event_config = event_trigger.TRIGGER_SCHEMA(
         {
             event_trigger.CONF_PLATFORM: "event",
-            event_trigger.CONF_EVENT_TYPE: "open_display_event",
+            event_trigger.CONF_EVENT_TYPE: "opendisplay_event",
             event_trigger.CONF_EVENT_DATA: {
                 CONF_DEVICE_ID: config[CONF_DEVICE_ID],
                 CONF_TYPE: config[CONF_TYPE],

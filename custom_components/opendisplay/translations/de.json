@@ -308,7 +308,7 @@
             "firmware": {
                 "name": "Firmware"
             },
-            "open_display_ble_firmware": {
+            "opendisplay_ble_firmware": {
                 "name": "OpenDisplay Firmware"
             }
         }
@@ -380,7 +380,7 @@
         }
     },
     "preview_features": {
-        "open_display_ble_updates": {
+        "opendisplay_ble_updates": {
             "name": "OpenDisplay Firmware-Updates",
             "description": "Zeigt ein Firmware-Update-Entity für OpenDisplay BLE Tags im Vergleich zur neuesten OpenDisplay_BLE GitHub-Version. Installation ist noch nicht verfügbar."
         }
@@ -394,7 +394,7 @@
         "ap_failed_action_http": "Aktion {action} fehlgeschlagen: HTTP {status_code} - {response_text}.",
         "device_not_found": "Gerät {device_id} nicht gefunden.",
         "device_no_identifiers": "Keine Bezeichner für Gerät {device_id} gefunden.",
-        "device_not_open_display": "Gerät {device_id} ist kein OpenDisplay-Gerät.",
+        "device_not_opendisplay": "Gerät {device_id} ist kein OpenDisplay-Gerät.",
         "no_targets_specified": "Keine Zielgeräte angegeben. Bitte device_id, label_id oder area_id angeben.",
         "ap_offline": "OEPL-AP ist offline. Netzverbindung und AP-Status prüfen.",
         "error_processing_device": "Unerwarteter Fehler bei der Verarbeitung von Gerät {entity_id}: {error}.",
@@ -455,11 +455,11 @@
         "ble_timeout": "Keine Antwort von {mac_address} innerhalb von {timeout}s.",
         "ble_operation_failed": "BLE-Operation {operation} nach {attempts} Versuchen fehlgeschlagen: {error}.",
         "ble_operation_retry": "BLE-Operation {operation} schlug bei Versuch {attempt} fehl: {error}. Neuer Versuch in {delay}s...",
-        "open_display_config_chunk_short": "Chunk-Daten zu kurz: {length} Bytes.",
-        "open_display_expected_chunk_zero": "Chunk 0 erwartet, aber Chunk {chunk_num} erhalten.",
-        "open_display_config_too_short": "Konfigurationsdaten zu kurz: {length} Bytes (mindestens {minimum}).",
-        "open_display_fw_response_short": "Firmware-Antwort zu kurz: {length} Bytes.",
-        "open_display_fw_version_format": "Firmware-SHA-Länge {sha_length} überschreitet Payload ({payload_length} Bytes).",
+        "opendisplay_config_chunk_short": "Chunk-Daten zu kurz: {length} Bytes.",
+        "opendisplay_expected_chunk_zero": "Chunk 0 erwartet, aber Chunk {chunk_num} erhalten.",
+        "opendisplay_config_too_short": "Konfigurationsdaten zu kurz: {length} Bytes (mindestens {minimum}).",
+        "opendisplay_fw_response_short": "Firmware-Antwort zu kurz: {length} Bytes.",
+        "opendisplay_fw_version_format": "Firmware-SHA-Länge {sha_length} überschreitet Payload ({payload_length} Bytes).",
         "tlv_section_too_short": "{section} erfordert {expected} Bytes, erhalten {actual}.",
         "tlv_data_too_short": "Konfigurationsdaten zu kurz: {length} Bytes (Minimum 2).",
         "tlv_crc_mismatch": "CRC32 stimmt nicht überein: erwartet {expected_crc32}, erhalten {actual_crc32}.",

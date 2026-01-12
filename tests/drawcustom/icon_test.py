@@ -21,10 +21,10 @@ ICON_IMG_PATH = os.path.join(BASE_IMG_PATH, 'icon')
 #         }]
 #     }
 #
-#     with patch('custom_components.open_display.imagegen.ImageGen.get_tag_info',
+#     with patch('custom_components.opendisplay.imagegen.ImageGen.get_tag_info',
 #                return_value=mock_tag_info):
 #         image_data = await image_gen.generate_custom_image(
-#             "open_display.test_tag",
+#             "opendisplay.test_tag",
 #             service_data
 #         )
 #

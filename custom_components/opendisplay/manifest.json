@@ -1,5 +1,5 @@
 {
-  "domain": "open_display",
+  "domain": "opendisplay",
   "name": "OpenDisplay",
   "bluetooth": [
     {
@@ -28,7 +28,7 @@
   "iot_class": "local_push",
   "issue_tracker": "https://github.com/OpenDisplay-org/Home_Assistant_Integration/issues",
   "preview_features": {
-    "open_display_ble_updates": {
+    "opendisplay_ble_updates": {
       "learn_more_url": "https://github.com/OpenDisplay-org/Firmware",
       "report_issue_url": "https://github.com/OpenDisplay-org/Home_Assistant_Integration/issues"
     }

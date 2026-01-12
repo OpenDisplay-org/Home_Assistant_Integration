@@ -265,7 +265,7 @@
       "firmware": {
         "name": "Firmware"
       },
-      "open_display_ble_firmware": {
+      "opendisplay_ble_firmware": {
         "name": "OpenDisplay Firmware"
       }
     }
@@ -277,7 +277,7 @@
     }
   },
   "preview_features": {
-    "open_display_ble_updates": {
+    "opendisplay_ble_updates": {
       "name": "OpenDisplay firmware updates",
       "description": "Shows a firmware update entity for OpenDisplay BLE tags that compares the installed firmware to the latest OpenDisplay_BLE GitHub release. Install is not available yet."
     }
@@ -291,7 +291,7 @@
     "ap_failed_action_http": { "message": "Failed to {action}: HTTP {status_code} - {response_text}" },
     "device_not_found": { "message": "Device {device_id} not found." },
     "device_no_identifiers": { "message": "No identifiers found for device {device_id}." },
-    "device_not_open_display": { "message": "Device {device_id} is not an OpenDisplay device." },
+    "device_not_opendisplay": { "message": "Device {device_id} is not an OpenDisplay device." },
     "no_targets_specified": { "message": "No target devices specified. Please provide device_id, label_id, or area_id." },
     "ap_offline": { "message": "OEPL AP is offline. Please check your network connection and AP status." },
     "error_processing_device": { "message": "Unexpected error processing device {entity_id}: {error}" },
@@ -357,11 +357,11 @@
     "ble_protocol_invalid_response_length": { "message": "Invalid display info response length: {length} (expected at least {expected_length})." },
     "ble_protocol_invalid_command_id": { "message": "Invalid command ID in response: {command_id}." },
     "ble_protocol_payload_too_short": { "message": "Display info payload too short." },
-    "open_display_config_chunk_short": { "message": "Chunk data too short: {length} bytes." },
-    "open_display_expected_chunk_zero": { "message": "Expected chunk 0, got chunk {chunk_num}." },
-    "open_display_config_too_short": { "message": "Config data too short: {length} bytes (need at least {minimum})." },
-    "open_display_fw_response_short": { "message": "Firmware version response too short: {length} bytes." },
-    "open_display_fw_version_format": { "message": "Firmware version SHA length {sha_length} exceeds payload ({payload_length} bytes)." },
+    "opendisplay_config_chunk_short": { "message": "Chunk data too short: {length} bytes." },
+    "opendisplay_expected_chunk_zero": { "message": "Expected chunk 0, got chunk {chunk_num}." },
+    "opendisplay_config_too_short": { "message": "Config data too short: {length} bytes (need at least {minimum})." },
+    "opendisplay_fw_response_short": { "message": "Firmware version response too short: {length} bytes." },
+    "opendisplay_fw_version_format": { "message": "Firmware version SHA length {sha_length} exceeds payload ({payload_length} bytes)." },
     "tlv_section_too_short": { "message": "{section} requires {expected} bytes, got {actual}." },
     "tlv_data_too_short": { "message": "Config data too short: {length} bytes (minimum 2)." },
     "tlv_crc_mismatch": { "message": "CRC32 mismatch: expected {expected_crc32}, got {actual_crc32}." },

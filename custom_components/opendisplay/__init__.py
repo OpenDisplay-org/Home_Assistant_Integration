@@ -119,8 +119,8 @@ async def async_remove_invalid_ble_entities(
     if metadata.power_mode not in (1, 3):  # Not battery (1) or solar (3)
         for entity in er.async_entries_for_config_entry(entity_registry, entry.entry_id):
             if entity.unique_id and (
-                    f"open_display_ble_{mac_address}_battery_percentage" in entity.unique_id or
-                    f"open_display_ble_{mac_address}_battery_voltage" in entity.unique_id
+                    f"opendisplay_ble_{mac_address}_battery_percentage" in entity.unique_id or
+                    f"opendisplay_ble_{mac_address}_battery_voltage" in entity.unique_id
             ):
                 _LOGGER.info("Removing battery sensor (power_mode=%s): %s", metadata.power_mode, entity.entity_id)
                 entity_registry.async_remove(entity.entity_id)
@@ -578,9 +578,9 @@ async def async_remove_storage_files(hass: HomeAssistant) -> None:
 
     Cleans up files created by the integration:
 
-    1. Tag types file (open_display_tagtypes.json)
-    2. Tag storage file (.storage/open_display_tags)
-    3. Image directory (www/open_display)
+    1. Tag types file (open_display_tagtypes.json, legacy)
+    2. Tag storage file (.storage/opendisplay_tags)
+    3. Image directory (www/opendisplay)
 
     This prevents orphaned files when the integration is removed
     and ensures a clean reinstallation if needed.
@@ -603,6 +603,7 @@ async def async_remove_storage_files(hass: HomeAssistant) -> None:
 
     # Remove tag types storage entry
     try:
+        await storage.async_remove_store(hass, "opendisplay_tagtypes")
         await storage.async_remove_store(hass, "open_display_tagtypes")
         _LOGGER.debug("Removed tag types storage file")
     except Exception as err:
@@ -618,7 +619,7 @@ async def async_remove_storage_files(hass: HomeAssistant) -> None:
             _LOGGER.error("Error removing tag storage file: %s", err)
 
     # Remove image directory
-    image_dir = hass.config.path("www/open_display")
+    image_dir = hass.config.path("www/opendisplay")
     if await hass.async_add_executor_job(os.path.exists, image_dir):
         try:
             # Get file list in executor

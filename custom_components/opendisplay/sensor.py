@@ -558,7 +558,7 @@ class OpenDisplayBLESensor(OpenDisplayBLEEntity, SensorEntity):
     @property
     def unique_id(self) -> str:
         """Return unique ID for this entity."""
-        return f"open_display_ble_{self._mac_address}_{self._description.key}"
+        return f"opendisplay_ble_{self._mac_address}_{self._description.key}"
 
     @property
     def native_value(self) -> StateType:

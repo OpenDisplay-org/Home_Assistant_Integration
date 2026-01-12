@@ -47,7 +47,7 @@ async def async_setup_entry(
 
     @callback
     def _sync_feature_state() -> None:
-        enabled = async_is_preview_feature_enabled(hass, DOMAIN, "open_display_ble_updates")
+        enabled = async_is_preview_feature_enabled(hass, DOMAIN, "opendisplay_ble_updates")
 
         if enabled and entry.entry_id not in added:
             metadata = BLEDeviceMetadata(entry_data.device_metadata or {})
@@ -73,7 +73,7 @@ async def async_setup_entry(
 
     # Listen for Labs toggle
     entry.async_on_unload(
-        async_listen(hass, DOMAIN, "open_display_ble_updates", _sync_feature_state)
+        async_listen(hass, DOMAIN, "opendisplay_ble_updates", _sync_feature_state)
     )
 
     # Apply current state
@@ -84,7 +84,7 @@ class OpenDisplayBleUpdateEntity(OpenDisplayBLEEntity, UpdateEntity):
     """Firmware update indicator for OpenDisplay tags."""
 
     _attr_has_entity_name = True
-    _attr_translation_key = "open_display_ble_firmware"
+    _attr_translation_key = "opendisplay_ble_firmware"
     _attr_device_class = UpdateDeviceClass.FIRMWARE
     _attr_entity_category = EntityCategory.DIAGNOSTIC
     _attr_supported_features = UpdateEntityFeature.RELEASE_NOTES
@@ -109,7 +109,7 @@ class OpenDisplayBleUpdateEntity(OpenDisplayBLEEntity, UpdateEntity):
         self._name = runtime_data.name
         self._session = async_get_clientsession(hass)
         super().__init__(self._mac, self._name, entry)
-        self._attr_unique_id = f"open_display_ble_{self._mac}_firmware_update"
+        self._attr_unique_id = f"opendisplay_ble_{self._mac}_firmware_update"
         self._attr_installed_version = self._compute_installed_version()
 
     @property

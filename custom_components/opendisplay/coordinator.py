@@ -223,7 +223,7 @@ class Hub:
 
         self._ws_task = self.hass.async_create_task(
             self._websocket_handler(),
-            "open_display_websocket"
+            "opendisplay_websocket"
         )
 
         # Wait briefly to ensure connection is established

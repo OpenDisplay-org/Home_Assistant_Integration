@@ -21,7 +21,7 @@ async def test_polygon_basic(image_gen, mock_tag_info):
         }]
     }
 
-    with patch('custom_components.open_display.imagegen.ImageGen.get_tag_info',
+    with patch('custom_components.opendisplay.imagegen.ImageGen.get_tag_info',
                return_value=mock_tag_info):
         image_data = await generate_test_image(image_gen, service_data)
 
@@ -42,7 +42,7 @@ async def test_polygon_filled(image_gen, mock_tag_info):
         }]
     }
 
-    with patch('custom_components.open_display.imagegen.ImageGen.get_tag_info',
+    with patch('custom_components.opendisplay.imagegen.ImageGen.get_tag_info',
                return_value=mock_tag_info):
         image_data = await generate_test_image(image_gen, service_data)
         generated_img = Image.open(BytesIO(image_data))

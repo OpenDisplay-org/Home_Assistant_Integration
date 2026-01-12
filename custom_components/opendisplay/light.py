@@ -82,7 +82,7 @@ class OpenDisplayBLELight(OpenDisplayBLEEntity, LightEntity):
     @property
     def unique_id(self) -> str:
         """Return unique ID for this entity."""
-        return f"open_display_ble_{self._mac_address}_light"
+        return f"opendisplay_ble_{self._mac_address}_light"
 
     @property
     def is_on(self) -> bool:

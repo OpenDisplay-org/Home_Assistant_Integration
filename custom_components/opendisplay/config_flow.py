@@ -177,7 +177,7 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         _LOGGER.debug("BLE Discovery - Name: '%s', Address: %s",
                      discovery_info.name, discovery_info.address)
 
-        await self.async_set_unique_id(f"open_display_ble_{discovery_info.address}")
+        await self.async_set_unique_id(f"opendisplay_ble_{discovery_info.address}")
         self._abort_if_unique_id_configured()
 
         self._discovery_info = discovery_info

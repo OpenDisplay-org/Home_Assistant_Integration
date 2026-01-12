@@ -20,7 +20,8 @@ GITHUB_API_URL = "https://api.github.com/repos/OpenDisplay/OpenDisplay/contents/
 GITHUB_RAW_URL = "https://raw.githubusercontent.com/OpenDisplay/OpenDisplay/master/resources/tagtypes"
 CACHE_DURATION = timedelta(hours=48)  # Cache tag definitions for 48 hours
 STORAGE_VERSION = 1
-STORAGE_KEY = "open_display_tagtypes"
+STORAGE_KEY = "opendisplay_tagtypes"
+LEGACY_STORAGE_KEY = "open_display_tagtypes"
 LEGACY_TAG_TYPES_FILE = "open_display_tagtypes.json"
 
 
@@ -189,6 +190,11 @@ class TagTypesManager:
             version=STORAGE_VERSION,
             key=STORAGE_KEY,
         )
+        self._legacy_store = storage.Store(
+            hass,
+            version=STORAGE_VERSION,
+            key=LEGACY_STORAGE_KEY,
+        )
         _LOGGER.debug("TagTypesManager instance created")
 
     async def load_stored_data(self) -> None:
@@ -212,6 +218,22 @@ class TagTypesManager:
                 await self._load_from_payload(stored_data)
                 return
             _LOGGER.warning("Stored tag types version mismatch, refetching fresh definitions")
+
+        if not stored_data:
+            legacy_data: dict[str, Any] | None = None
+            try:
+                legacy_data = await self._legacy_store.async_load()
+            except Exception as err:  # pragma: no cover - defensive
+                _LOGGER.error("Error loading legacy tag types from storage: %s", err, exc_info=True)
+
+            if legacy_data and legacy_data.get("version") == STORAGE_VERSION:
+                await self._load_from_payload(legacy_data)
+                await self._save_to_store()
+                try:
+                    await storage.async_remove_store(self._hass, LEGACY_STORAGE_KEY)
+                except Exception as err:  # pragma: no cover - defensive
+                    _LOGGER.warning("Failed to remove legacy tag types storage: %s", err)
+                return
 
         fetch_success = await self._fetch_tag_types()
         if fetch_success:

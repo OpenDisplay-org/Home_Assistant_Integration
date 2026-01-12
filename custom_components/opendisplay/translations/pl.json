@@ -265,7 +265,7 @@
       "firmware": {
         "name": "Oprogramowanie układowe"
       },
-      "open_display_ble_firmware": {
+      "opendisplay_ble_firmware": {
         "name": "Oprogramowanie OpenDisplay"
       }
     }
@@ -277,7 +277,7 @@
     }
   },
   "preview_features": {
-    "open_display_ble_updates": {
+    "opendisplay_ble_updates": {
       "name": "Aktualizacje firmware OpenDisplay",
       "description": "Wyświetla encję aktualizacji firmware dla tagów OpenDisplay BLE, porównując z najnowszym wydaniem OpenDisplay_BLE na GitHub. Instalacja jeszcze niedostępna."
     }
@@ -307,7 +307,7 @@
     "device_no_identifiers": {
       "message": "Nie znaleziono identyfikatorów dla urządzenia {device_id}."
     },
-    "device_not_open_display": {
+    "device_not_opendisplay": {
       "message": "Urządzenie {device_id} nie jest urządzeniem OpenDisplay."
     },
     "no_targets_specified": {
@@ -505,19 +505,19 @@
     "ble_protocol_payload_too_short": {
       "message": "Ładunek informacji o wyświetlaczu jest zbyt krótki."
     },
-    "open_display_config_chunk_short": {
+    "opendisplay_config_chunk_short": {
       "message": "Dane fragmentu są zbyt krótkie: {length} bajtów."
     },
-    "open_display_expected_chunk_zero": {
+    "opendisplay_expected_chunk_zero": {
       "message": "Oczekiwano fragmentu 0, otrzymano fragment {chunk_num}."
     },
-    "open_display_config_too_short": {
+    "opendisplay_config_too_short": {
       "message": "Dane konfiguracji są zbyt krótkie: {length} bajtów (wymagane co najmniej {minimum})."
     },
-    "open_display_fw_response_short": {
+    "opendisplay_fw_response_short": {
       "message": "Odpowiedź wersji firmware jest zbyt krótka: {length} bajtów."
     },
-    "open_display_fw_version_format": {
+    "opendisplay_fw_version_format": {
       "message": "Długość SHA wersji firmware {sha_length} przekracza ładunek ({payload_length} bajtów)."
     },
     "tlv_section_too_short": {

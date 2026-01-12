@@ -38,7 +38,7 @@ def is_bluetooth_available(hass: HomeAssistant) -> bool:
 def get_image_folder(hass: HomeAssistant) -> str:
     """Return the folder where images are stored.
 
-    Provides the path to the www/open_display directory where
+    Provides the path to the www/opendisplay directory where
     generated images are stored. This allows image access through
     Home Assistant's web server.
 
@@ -48,14 +48,14 @@ def get_image_folder(hass: HomeAssistant) -> str:
     Returns:
         str: Absolute path to the image storage directory
     """
-    return hass.config.path("www/open_display")
+    return hass.config.path("www/opendisplay")
 
 
 def get_image_path(hass: HomeAssistant, entity_id: str) -> str:
     """Return the path to the image file for a specific tag.
 
     Generates the full path to a tag's image file, following the
-    naming convention: open_display.<tag_mac>.jpg
+    naming convention: opendisplay.<tag_mac>.jpg
 
     Args:
         hass: Home Assistant instance for config path access
@@ -64,7 +64,7 @@ def get_image_path(hass: HomeAssistant, entity_id: str) -> str:
     Returns:
         str: Absolute path to the tag's image file
     """
-    return hass.config.path("www/open_display/open_display." + str(entity_id).lower() + ".jpg")
+    return hass.config.path("www/opendisplay/opendisplay." + str(entity_id).lower() + ".jpg")
 
 
 def get_hub_from_hass(hass: HomeAssistant):

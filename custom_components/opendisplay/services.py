@@ -78,7 +78,7 @@ async def async_setup_services(hass: HomeAssistant) -> None:
         if domain_mac[0] != DOMAIN:
             raise ServiceValidationError(
                 translation_domain=DOMAIN,
-                translation_key="device_not_open_display",
+                translation_key="device_not_opendisplay",
                 translation_placeholders={"device_id": device_id},
             )
 
@@ -406,7 +406,7 @@ async def async_setup_services(hass: HomeAssistant) -> None:
             {
                 "title": "Tag Types Refresh",
                 "message": message,
-                "notification_id": "open_display_tag_types_refresh",
+                "notification_id": "opendisplay_tag_types_refresh",
             },
         )
 

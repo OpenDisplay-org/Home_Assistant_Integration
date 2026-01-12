@@ -26,7 +26,7 @@ async def test_text_multiline_basic(image_gen, mock_tag_info):
         }]
     }
 
-    with patch('custom_components.open_display.imagegen.ImageGen.get_tag_info',
+    with patch('custom_components.opendisplay.imagegen.ImageGen.get_tag_info',
                return_value=mock_tag_info):
         image_data = await generate_test_image(image_gen, service_data)
 
@@ -53,7 +53,7 @@ async def test_text_multiline_delimiter(image_gen, mock_tag_info):
         }]
     }
 
-    with patch('custom_components.open_display.imagegen.ImageGen.get_tag_info',
+    with patch('custom_components.opendisplay.imagegen.ImageGen.get_tag_info',
                return_value=mock_tag_info):
         image_data = await generate_test_image(image_gen, service_data)
 
@@ -80,7 +80,7 @@ async def test_text_multiline_empty_line(image_gen, mock_tag_info):
         }]
     }
 
-    with patch('custom_components.open_display.imagegen.ImageGen.get_tag_info',
+    with patch('custom_components.opendisplay.imagegen.ImageGen.get_tag_info',
                return_value=mock_tag_info):
         image_data = await generate_test_image(image_gen, service_data)
 
@@ -106,7 +106,7 @@ async def test_text_multiline_delimiter_and_newline(image_gen, mock_tag_info):
         }]
     }
 
-    with patch('custom_components.open_display.imagegen.ImageGen.get_tag_info',
+    with patch('custom_components.opendisplay.imagegen.ImageGen.get_tag_info',
                return_value=mock_tag_info):
         image_data = await generate_test_image(image_gen, service_data)
 
@@ -133,10 +133,10 @@ async def test_text_multiline_delimiter_and_newline(image_gen, mock_tag_info):
 #         }]
 #     }
 #
-#     with patch('custom_components.open_display.imagegen.ImageGen.get_tag_info',
+#     with patch('custom_components.opendisplay.imagegen.ImageGen.get_tag_info',
 #                return_value=mock_tag_info):
 #         image_data = await image_gen.generate_custom_image(
-#             "open_display.test_tag",
+#             "opendisplay.test_tag",
 #             service_data
 #         )
 #
@@ -164,10 +164,10 @@ async def test_text_multiline_delimiter_and_newline(image_gen, mock_tag_info):
 #         }]
 #     }
 #
-#     with patch('custom_components.open_display.imagegen.ImageGen.get_tag_info',
+#     with patch('custom_components.opendisplay.imagegen.ImageGen.get_tag_info',
 #                return_value=mock_tag_info):
 #         image_data = await image_gen.generate_custom_image(
-#             "open_display.test_tag",
+#             "opendisplay.test_tag",
 #             service_data
 #         )
 #
@@ -194,10 +194,10 @@ async def test_text_multiline_delimiter_and_newline(image_gen, mock_tag_info):
 #         }]
 #     }
 #
-#     with patch('custom_components.open_display.imagegen.ImageGen.get_tag_info',
+#     with patch('custom_components.opendisplay.imagegen.ImageGen.get_tag_info',
 #                return_value=mock_tag_info):
 #         image_data = await image_gen.generate_custom_image(
-#             "open_display.test_tag",
+#             "opendisplay.test_tag",
 #             service_data
 #         )
 #
