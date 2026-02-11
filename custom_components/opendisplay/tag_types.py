@@ -16,8 +16,8 @@ from .const import DOMAIN
 
 _LOGGER = logging.getLogger(__name__)
 
-GITHUB_API_URL = "https://api.github.com/repos/OpenEPaperLink/OpenEPaperLink/contents/resources/tagtypes"
-GITHUB_RAW_URL = "https://raw.githubusercontent.com/OpenEPaperLink/OpenEPaperLink/master/resources/tagtypes"
+GITHUB_API_URL = "https://api.github.com/repos/OpenDisplay/OpenDisplay/contents/resources/tagtypes"
+GITHUB_RAW_URL = "https://raw.githubusercontent.com/OpenDisplay/OpenDisplay/master/resources/tagtypes"
 CACHE_DURATION = timedelta(hours=48)  # Cache tag definitions for 48 hours
 STORAGE_VERSION = 1
 STORAGE_KEY = "opendisplay_tagtypes"
@@ -239,13 +239,6 @@ class TagTypesManager:
         if fetch_success:
             await self._cleanup_legacy_file()
         else:
-            # If fetch failed and we have no types, load fallback definitions
-            if not self._tag_types:
-                _LOGGER.warning(
-                    "Failed to fetch tag types from GitHub and no stored data available. "
-                    "Loading fallback definitions. Tag types will be refreshed on next integration reload."
-                )
-                self._load_fallback_types()
             await self._cleanup_legacy_file()
 
     async def _save_to_store(self) -> None:
@@ -315,32 +308,30 @@ class TagTypesManager:
         This is the primary method that should be called before accessing
         tag type information to ensure data availability.
 
-        If tag types cannot be loaded from GitHub or storage, fallback
-        definitions will be used to ensure basic functionality.
+        Raises:
+            HomeAssistantError: If tag types could not be loaded
         """
         async with self._lock:
             if not self._tag_types:
                 await self.load_stored_data()
 
-            # After load_stored_data, we should always have types (either from storage,
-            # GitHub, or fallback). If not, something is seriously wrong.
+            # If still no types after loading from storage, this is a critical failure
             if not self._tag_types:
-                _LOGGER.error(
-                    "Critical error: No tag types available after loading. "
-                    "This should not happen as fallback types should be loaded."
+                raise HomeAssistantError(
+                    translation_domain=DOMAIN,
+                    translation_key="tagtypes_load_failed",
                 )
-                # Load fallback as last resort
-                self._load_fallback_types()
 
             # If the cache is expired, attempt refresh
             if not self._last_update or datetime.now() - self._last_update > CACHE_DURATION:
                 _LOGGER.debug("Tag types cache expired, attempting refresh")
                 fetch_success = await self._fetch_tag_types()
 
-                # If refresh failed, log a warning but continue with existing types
-                if not fetch_success:
-                    _LOGGER.warning(
-                        "Failed to refresh tag types from GitHub. Using cached or fallback definitions."
+                # If refresh failed and have no valid types, raise an exception
+                if not fetch_success and not self._tag_types:
+                    raise HomeAssistantError(
+                        translation_domain=DOMAIN,
+                        translation_key="tagtypes_refresh_failed"
                     )
 
     async def _fetch_tag_types(self) -> bool:
@@ -357,17 +348,11 @@ class TagTypesManager:
         falls back to built-in basic definitions.
         """
         try:
-            _LOGGER.debug("Fetching tag type definitions from GitHub: %s", GITHUB_API_URL)
             async with aiohttp.ClientSession() as session:
                 # First get the directory listing from GitHub API
                 headers = {"Accept": "application/vnd.github.v3+json"}
                 async with session.get(GITHUB_API_URL, headers=headers) as response:
                     if response.status != 200:
-                        _LOGGER.error(
-                            "GitHub API request failed with status %d for URL: %s",
-                            response.status,
-                            GITHUB_API_URL
-                        )
                         raise Exception(f"GitHub API returned status {response.status}")
 
                     directory_contents = await response.json()
@@ -420,24 +405,13 @@ class TagTypesManager:
                 if new_types:
                     self._tag_types = new_types
                     self._last_update = datetime.now()
-                    _LOGGER.info(
-                        "Successfully loaded %d tag definitions from GitHub",
-                        len(new_types)
-                    )
+                    _LOGGER.info(f"Successfully loaded {len(new_types)} tag definitions")
                     await self._save_to_store()
                     return True
-                _LOGGER.warning(
-                    "No valid tag definitions found in GitHub repository at %s",
-                    GITHUB_API_URL
-                )
+                _LOGGER.error("No valid tag definitions found")
 
         except Exception as e:
-            _LOGGER.error(
-                "Error fetching tag types from %s: %s",
-                GITHUB_API_URL,
-                str(e),
-                exc_info=True
-            )
+            _LOGGER.error(f"Error fetching tag types: {str(e)}")
             return False
 
         # Do NOT load fallback types - let caller decide how to handle failure
@@ -466,105 +440,27 @@ class TagTypesManager:
     def _load_fallback_types(self) -> None:
         """Load basic fallback definitions if fetching fails on first run.
 
-        Populates the manager with a comprehensive set of built-in tag type
+        Populates the manager with a minimal set of built-in tag type
         definitions to ensure basic functionality when GitHub is unreachable.
 
-        This provides support for all known tag models with proper dimensions,
-        version information, and basic configuration options.
+        This provides support for common tag models with basic dimensions,
+        though without detailed configuration options.
 
-        The fallback types include all tag definitions from the OpenEPaperLink
-        repository at: https://github.com/OpenEPaperLink/OpenEPaperLink/tree/master/resources/tagtypes
+        The fallback types include:
+
+        - Common M2 tag sizes (1.54", 2.9", 4.2")
+        - AP display types
+        - LILYGO TPANEL
+        - Segmented tag type
         """
         fallback_definitions = {
-            0: {"version": 4, "name": "M2 1.54\"", "width": 152, "height": 152},
-            1: {"version": 5, "name": "M2 2.9\"", "width": 296, "height": 128},
-            2: {"version": 5, "name": "M2 4.2\"", "width": 400, "height": 300},
-            3: {"version": 6, "name": "M2 2.2\"", "width": 212, "height": 104},
-            4: {"version": 4, "name": "M2 2.6\"", "width": 296, "height": 152},
-            5: {"version": 4, "name": "M2 7.4\"", "width": 640, "height": 384},
-            6: {"version": 4, "name": "Opticon 2.2\"", "width": 250, "height": 128},
-            7: {"version": 4, "name": "Opticon 2.9\"", "width": 296, "height": 128},
-            8: {"version": 2, "name": "Opticon 4.2\"", "width": 400, "height": 300},
-            9: {"version": 2, "name": "Opticon 7.5\"", "width": 640, "height": 384},
-            17: {"version": 3, "name": "M2 2.9\" (UC8151)", "width": 296, "height": 128},
-            18: {"version": 3, "name": "M2 4.2\" UC", "width": 400, "height": 300},
-            33: {"version": 2, "name": "ST‐GM29XXF 2.9\"", "width": 296, "height": 128},
-            34: {"version": 2, "name": "M2 2.7\"", "width": 264, "height": 176},
-            38: {"version": 1, "name": "M2 7.5\" BW", "width": 640, "height": 384},
-            39: {"version": 3, "name": "ST‐GM29MT1 2.9\"", "width": 296, "height": 128},
-            40: {"version": 2, "name": "M3 1.6\" BWRY", "width": 168, "height": 168},
-            41: {"version": 1, "name": "M3 2.4\" BWRY", "width": 296, "height": 168},
-            42: {"version": 1, "name": "M3 3.0\" BWRY", "width": 400, "height": 168},
-            43: {"version": 1, "name": "M3 2.9\" BWRY", "width": 384, "height": 168},
-            44: {"version": 1, "name": "M3 4.3\" BWRY", "width": 522, "height": 152},
-            45: {"version": 2, "name": "M3 12.2\"", "width": 960, "height": 768},
-            46: {"version": 5, "name": "M3 9.7\"", "width": 960, "height": 672},
-            47: {"version": 4, "name": "M3 4.3\"", "width": 522, "height": 152},
-            48: {"version": 2, "name": "M3 1.6\"", "width": 200, "height": 200},
-            49: {"version": 1, "name": "M3 2.2\"", "width": 296, "height": 160},
-            50: {"version": 1, "name": "M3 2.6\"", "width": 360, "height": 184},
-            51: {"version": 3, "name": "M3 2.9\"", "width": 384, "height": 168},
-            52: {"version": 2, "name": "M3 4.2\"", "width": 400, "height": 300},
-            53: {"version": 2, "name": "M3 6.0\"", "width": 600, "height": 448},
-            54: {"version": 5, "name": "M3 7.5\"", "width": 800, "height": 480},
-            55: {"version": 3, "name": "M3 11.6\"", "width": 960, "height": 640},
-            60: {"version": 3, "name": "M3 4.2\" BWY", "width": 400, "height": 300},
-            64: {"version": 1, "name": "M3 2.9\" BW", "width": 384, "height": 168},
-            65: {"version": 1, "name": "M3 5.85\"", "width": 792, "height": 272},
-            66: {"version": 1, "name": "M3 5.85\" BW", "width": 792, "height": 272},
-            67: {"version": 2, "name": "M3 1.3\" Peghook", "width": 144, "height": 200},
-            68: {"version": 2, "name": "M3 5.81\" BW", "width": 720, "height": 256},
-            69: {"version": 3, "name": "M3 2.2 Lite\"", "width": 250, "height": 128},
-            70: {"version": 1, "name": "M3 2.2\" BW", "width": 296, "height": 160},
-            71: {"version": 4, "name": "M3 2.7\"", "width": 300, "height": 200},
-            72: {"version": 1, "name": "M3 5.81\" BWR", "width": 720, "height": 256},
-            73: {"version": 2, "name": "M3 5.81\" V2 BWR", "width": 720, "height": 256},
-            74: {"version": 1, "name": "M3 1.6\" 200px BWRY", "width": 200, "height": 200},
-            75: {"version": 1, "name": "M3 2.2\" BWRY", "width": 296, "height": 160},
-            76: {"version": 1, "name": "M3 7.5\" BWRY", "width": 800, "height": 480},
-            77: {"version": 3, "name": "M3 11.6\" BWRY", "width": 960, "height": 640},
-            78: {"version": 2, "name": "M3 2.6\" BW", "width": 360, "height": 184},
-            80: {"version": 2, "name": "HD150 5.83\" BWR", "width": 648, "height": 480},
-            84: {"version": 4, "name": "HS BW 2.13\"", "width": 256, "height": 128},
-            85: {"version": 5, "name": "HS BWR 2.13\"", "width": 256, "height": 128},
-            86: {"version": 6, "name": "HS BWR 2.66\"", "width": 296, "height": 152},
-            87: {"version": 3, "name": "TLSR BWR 1.54\"", "width": 200, "height": 200},
-            88: {"version": 3, "name": "TLSR BW 2.13\"", "width": 256, "height": 128},
-            89: {"version": 3, "name": "TLSR BWR 2.13\"", "width": 264, "height": 136},
-            90: {"version": 1, "name": "HS BW 2.13\" LowRes", "width": 212, "height": 104},
-            96: {"version": 6, "name": "HS BWY 3.5\"", "width": 384, "height": 184},
-            97: {"version": 4, "name": "HS BWR 3.5\"", "width": 384, "height": 184},
-            98: {"version": 4, "name": "HS BW 3.5\"", "width": 384, "height": 184},
-            99: {"version": 6, "name": "TLSR BWR 4.2\"", "width": 400, "height": 300},
-            102: {"version": 2, "name": "HS BWY 7,5\"", "width": 800, "height": 480},
-            103: {"version": 3, "name": "HS 2.00\" BWY", "width": 152, "height": 200},
-            104: {"version": 4, "name": "HS BWY 3.46\"", "width": 480, "height": 176},
-            105: {"version": 4, "name": "TLSR BW 2.13\"", "width": 250, "height": 136},
-            106: {"version": 1, "name": "HS BWR 5,83\"", "width": 648, "height": 480},
-            107: {"version": 3, "name": "HS BWRY 7,5\"", "width": 800, "height": 480},
-            108: {"version": 3, "name": "HS BWRY 2,00\"", "width": 152, "height": 200},
-            109: {"version": 3, "name": "HS BWRY 3,5\"", "width": 384, "height": 184},
-            110: {"version": 3, "name": "HS BWRY 2,9\"", "width": 296, "height": 128},
-            111: {"version": 2, "name": "HS BWRY 2,60\"", "width": 296, "height": 152},
-            128: {"version": 1, "name": "Chroma 7.4\"", "width": 640, "height": 384},
-            129: {"version": 2, "name": "Chroma Aeon 74 7.4\"", "width": 800, "height": 480},
-            130: {"version": 2, "name": "Chroma29 2.9\"", "width": 296, "height": 128},
-            131: {"version": 2, "name": "Chroma42 4.2\"", "width": 400, "height": 300},
-            176: {"version": 5, "name": "Gicisky BLE EPD BW 2.13\"", "width": 250, "height": 128},
-            177: {"version": 5, "name": "Gicisky BLE EPD BWR 2.13\"", "width": 250, "height": 128},
-            178: {"version": 2, "name": "Gicisky BLE EPD BW 2.9\"", "width": 296, "height": 128},
-            179: {"version": 2, "name": "Gicisky BLE EPD BWR 2.9\"", "width": 296, "height": 128},
-            181: {"version": 2, "name": "Gicisky BLE EPD BWR 4.2\"", "width": 400, "height": 300},
-            186: {"version": 5, "name": "Gicisky BLE TFT 2.13\"", "width": 250, "height": 136},
-            189: {"version": 2, "name": "BLE EPD BWR 2.9\" Silabs", "width": 384, "height": 168},
-            190: {"version": 1, "name": "ATC MiThermometer BLE", "width": 6, "height": 8},
-            192: {"version": 2, "name": "BWRY example", "width": 360, "height": 180},
-            226: {"version": 1, "name": "LILYGO TPANEL 4\"", "width": 480, "height": 480},
-            227: {"version": 1, "name": "GDEM1085Z51 10.85\"", "width": 1360, "height": 480},
-            228: {"version": 1, "name": "BLE TFT 128x128", "width": 128, "height": 128},
-            229: {"version": 1, "name": "TFT 240x320", "width": 320, "height": 172},
-            240: {"version": 2, "name": "SLT‐EM007 Segmented", "width": 0, "height": 0},
-            250: {"version": 1, "name": "ConfigMode", "width": 0, "height": 0},
+            0: {"name": "M2 1.54\"", "width": 152, "height": 152},
+            1: {"name": "M2 2.9\"", "width": 296, "height": 128},
+            2: {"name": "M2 4.2\"", "width": 400, "height": 300},
+            224: {"name": "AP display", "width": 320, "height": 170},
+            225: {"name": "AP display", "width": 160, "height": 80},
+            226: {"name": "LILYGO TPANEL", "width": 480, "height": 480},
+            240: {"name": "Segmented", "width": 0, "height": 0},
         }
         self._tag_types = {
             type_id: TagType(type_id, data) for type_id, data in fallback_definitions.items()
