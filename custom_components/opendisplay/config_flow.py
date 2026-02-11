@@ -322,12 +322,22 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                         }
                 else:
                     # ATC devices: Use tagtypes.json lookup and store individual fields
-                    tag_types_manager = await get_tag_types_manager(self.hass)
+                    # Try to get tag types manager, but don't fail if unavailable
+                    tag_types_manager = None
+                    try:
+                        tag_types_manager = await get_tag_types_manager(self.hass)
+                        _LOGGER.debug("Tag types manager loaded successfully")
+                    except Exception as tag_err:
+                        _LOGGER.warning(
+                            "Could not load tag types during config flow, will use fallback values: %s",
+                            tag_err
+                        )
+                    
                     model_name = get_hw_string(hw_type) if hw_type else "Unknown"
                     _LOGGER.debug("Resolved hw_type %s to model: %s", hw_type, model_name)
 
-                    # Refine color_scheme using TagTypes db
-                    if tag_types_manager.is_in_hw_map(hw_type):
+                    # Refine color_scheme using TagTypes db if available
+                    if tag_types_manager and tag_types_manager.is_in_hw_map(hw_type):
                         tag_type = await tag_types_manager.get_tag_info(hw_type)
                         color_table = tag_type.color_table
 
@@ -342,10 +352,16 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                     else:
                         # Fallback to protocol detection
                         color_scheme = capabilities.color_scheme
-                        _LOGGER.warning(
-                            "hw_type %s not in TagTypes, using protocol color_scheme: %d",
-                            hw_type, color_scheme
-                        )
+                        if not tag_types_manager:
+                            _LOGGER.info(
+                                "Tag types not available, using protocol-detected color_scheme: %d",
+                                color_scheme
+                            )
+                        else:
+                            _LOGGER.warning(
+                                "hw_type %s not in TagTypes, using protocol color_scheme: %d",
+                                hw_type, color_scheme
+                            )
 
                     # Build device metadata from capabilities
                     device_metadata = {

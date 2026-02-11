@@ -16,8 +16,8 @@ from .const import DOMAIN
 
 _LOGGER = logging.getLogger(__name__)
 
-GITHUB_API_URL = "https://api.github.com/repos/OpenDisplay/OpenDisplay/contents/resources/tagtypes"
-GITHUB_RAW_URL = "https://raw.githubusercontent.com/OpenDisplay/OpenDisplay/master/resources/tagtypes"
+GITHUB_API_URL = "https://api.github.com/repos/OpenEPaperLink/OpenEPaperLink/contents/resources/tagtypes"
+GITHUB_RAW_URL = "https://raw.githubusercontent.com/OpenEPaperLink/OpenEPaperLink/master/resources/tagtypes"
 CACHE_DURATION = timedelta(hours=48)  # Cache tag definitions for 48 hours
 STORAGE_VERSION = 1
 STORAGE_KEY = "opendisplay_tagtypes"
@@ -239,6 +239,13 @@ class TagTypesManager:
         if fetch_success:
             await self._cleanup_legacy_file()
         else:
+            # If fetch failed and we have no types, load fallback definitions
+            if not self._tag_types:
+                _LOGGER.warning(
+                    "Failed to fetch tag types from GitHub and no stored data available. "
+                    "Loading fallback definitions. Tag types will be refreshed on next integration reload."
+                )
+                self._load_fallback_types()
             await self._cleanup_legacy_file()
 
     async def _save_to_store(self) -> None:
@@ -308,30 +315,32 @@ class TagTypesManager:
         This is the primary method that should be called before accessing
         tag type information to ensure data availability.
 
-        Raises:
-            HomeAssistantError: If tag types could not be loaded
+        If tag types cannot be loaded from GitHub or storage, fallback
+        definitions will be used to ensure basic functionality.
         """
         async with self._lock:
             if not self._tag_types:
                 await self.load_stored_data()
 
-            # If still no types after loading from storage, this is a critical failure
+            # After load_stored_data, we should always have types (either from storage,
+            # GitHub, or fallback). If not, something is seriously wrong.
             if not self._tag_types:
-                raise HomeAssistantError(
-                    translation_domain=DOMAIN,
-                    translation_key="tagtypes_load_failed",
+                _LOGGER.error(
+                    "Critical error: No tag types available after loading. "
+                    "This should not happen as fallback types should be loaded."
                 )
+                # Load fallback as last resort
+                self._load_fallback_types()
 
             # If the cache is expired, attempt refresh
             if not self._last_update or datetime.now() - self._last_update > CACHE_DURATION:
                 _LOGGER.debug("Tag types cache expired, attempting refresh")
                 fetch_success = await self._fetch_tag_types()
 
-                # If refresh failed and have no valid types, raise an exception
-                if not fetch_success and not self._tag_types:
-                    raise HomeAssistantError(
-                        translation_domain=DOMAIN,
-                        translation_key="tagtypes_refresh_failed"
+                # If refresh failed, log a warning but continue with existing types
+                if not fetch_success:
+                    _LOGGER.warning(
+                        "Failed to refresh tag types from GitHub. Using cached or fallback definitions."
                     )
 
     async def _fetch_tag_types(self) -> bool:
@@ -348,11 +357,17 @@ class TagTypesManager:
         falls back to built-in basic definitions.
         """
         try:
+            _LOGGER.debug("Fetching tag type definitions from GitHub: %s", GITHUB_API_URL)
             async with aiohttp.ClientSession() as session:
                 # First get the directory listing from GitHub API
                 headers = {"Accept": "application/vnd.github.v3+json"}
                 async with session.get(GITHUB_API_URL, headers=headers) as response:
                     if response.status != 200:
+                        _LOGGER.error(
+                            "GitHub API request failed with status %d for URL: %s",
+                            response.status,
+                            GITHUB_API_URL
+                        )
                         raise Exception(f"GitHub API returned status {response.status}")
 
                     directory_contents = await response.json()
@@ -405,13 +420,24 @@ class TagTypesManager:
                 if new_types:
                     self._tag_types = new_types
                     self._last_update = datetime.now()
-                    _LOGGER.info(f"Successfully loaded {len(new_types)} tag definitions")
+                    _LOGGER.info(
+                        "Successfully loaded %d tag definitions from GitHub",
+                        len(new_types)
+                    )
                     await self._save_to_store()
                     return True
-                _LOGGER.error("No valid tag definitions found")
+                _LOGGER.warning(
+                    "No valid tag definitions found in GitHub repository at %s",
+                    GITHUB_API_URL
+                )
 
         except Exception as e:
-            _LOGGER.error(f"Error fetching tag types: {str(e)}")
+            _LOGGER.error(
+                "Error fetching tag types from %s: %s",
+                GITHUB_API_URL,
+                str(e),
+                exc_info=True
+            )
             return False
 
         # Do NOT load fallback types - let caller decide how to handle failure
