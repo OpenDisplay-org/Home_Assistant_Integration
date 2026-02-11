@@ -33,7 +33,21 @@ jobs:
       
       - name: Generate updated tag_types.py
         id: generate
-        run: python3 scripts/generate_tag_types.py new_tag_types.json
+        run: |
+          python3 scripts/generate_tag_types.py new_tag_types.json
+          rm -f new_tag_types.json
+      
+      - name: Close existing automated PR
+        if: steps.generate.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Find and close any existing open PRs on the automated branch
+          existing_prs=$(gh pr list --repo "${{ github.repository }}" --head "automated/sync-tag-definitions" --state open --json number --jq '.[].number')
+          for pr_number in $existing_prs; do
+            echo "Closing existing PR #$pr_number"
+            gh pr close "$pr_number" --repo "${{ github.repository }}" --comment "Superseded by a newer automated update."
+          done
       
       - name: Create Pull Request
         if: steps.generate.outputs.changed == 'true'
@@ -63,6 +77,8 @@ jobs:
             *This PR was automatically created by the sync-tag-definitions workflow*
           branch: 'automated/sync-tag-definitions'
           delete-branch: true
+          add-paths: |
+            custom_components/opendisplay/tag_types.py
           labels: |
             automated
             dependencies
