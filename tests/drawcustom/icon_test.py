@@ -30,5 +30,5 @@ ICON_IMG_PATH = os.path.join(BASE_IMG_PATH, 'icon')
 #
 #         generated_img = Image.open(BytesIO(image_data))
 #         save_image(image_data)
-#         example_img = Image.open(os.path.join(ICON_IMG_PATH, 'icon_basic.png'))
+#         example_img = Image.open(os.path.join(ICON_IMG_PATH, 'icon_basic.jpg'))
 #         assert images_equal(generated_img, example_img), "Basic icon rendering failed"

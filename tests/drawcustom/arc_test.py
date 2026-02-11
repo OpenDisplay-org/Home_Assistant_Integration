@@ -31,7 +31,7 @@ async def test_arc_basic(image_gen, mock_tag_info):
         image_data = await generate_test_image(image_gen, service_data)
 
         generated_img = Image.open(BytesIO(image_data))
-        example_img = Image.open(os.path.join(ARC_IMG_PATH, 'arc_basic.png'))
+        example_img = Image.open(os.path.join(ARC_IMG_PATH, 'arc_basic.jpg'))
         assert images_equal(generated_img, example_img), "Basic arc rendering failed"
 
 @pytest.mark.asyncio
@@ -56,5 +56,5 @@ async def test_pie_slice_basic(image_gen, mock_tag_info):
         image_data = await generate_test_image(image_gen, service_data)
 
         generated_img = Image.open(BytesIO(image_data))
-        example_img = Image.open(os.path.join(ARC_IMG_PATH, 'pie_slice_basic.png'))
+        example_img = Image.open(os.path.join(ARC_IMG_PATH, 'pie_slice_basic.jpg'))
         assert images_equal(generated_img, example_img), "Basic pie slice rendering failed"

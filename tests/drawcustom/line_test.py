@@ -30,7 +30,7 @@ async def test_line_basic(image_gen, mock_tag_info):
         image_data = await generate_test_image(image_gen, service_data)
 
         generated_img = Image.open(BytesIO(image_data))
-        example_img = Image.open(os.path.join(LINE_IMG_PATH, 'line_basic.png'))
+        example_img = Image.open(os.path.join(LINE_IMG_PATH, 'line_basic.jpg'))
         assert images_equal(generated_img, example_img), "Basic line rendering failed"
 
 @pytest.mark.asyncio
@@ -55,7 +55,7 @@ async def test_line_custom(image_gen, mock_tag_info):
         image_data = await generate_test_image(image_gen, service_data)
 
         generated_img = Image.open(BytesIO(image_data))
-        example_img = Image.open(os.path.join(LINE_IMG_PATH, 'line_custom.png'))
+        example_img = Image.open(os.path.join(LINE_IMG_PATH, 'line_custom.jpg'))
         assert images_equal(generated_img, example_img), "Custom line rendering failed"
 
 @pytest.mark.asyncio
@@ -80,7 +80,7 @@ async def test_dashed_line_basic(image_gen, mock_tag_info):
         image_data = await generate_test_image(image_gen, service_data)
 
         generated_img = Image.open(BytesIO(image_data))
-        example_img = Image.open(os.path.join(LINE_IMG_PATH, 'dashed_line_basic.png'))
+        example_img = Image.open(os.path.join(LINE_IMG_PATH, 'dashed_line_basic.jpg'))
         assert images_equal(generated_img, example_img), "Basic dashed line rendering failed"
 
 @pytest.mark.asyncio
@@ -107,7 +107,7 @@ async def test_dashed_line_custom_lengths(image_gen, mock_tag_info):
         image_data = await generate_test_image(image_gen, service_data)
 
         generated_img = Image.open(BytesIO(image_data))
-        example_img = Image.open(os.path.join(LINE_IMG_PATH, 'dashed_line_custom_lengths.png'))
+        example_img = Image.open(os.path.join(LINE_IMG_PATH, 'dashed_line_custom_lengths.jpg'))
         assert images_equal(generated_img, example_img), "Custom dashed line rendering failed"
 
 @pytest.mark.asyncio
@@ -131,7 +131,7 @@ async def test_dashed_line_basic_vertical(image_gen, mock_tag_info):
                return_value=mock_tag_info):
         image_data = await generate_test_image(image_gen, service_data)
         generated_img = Image.open(BytesIO(image_data))
-        example_img = Image.open(os.path.join(LINE_IMG_PATH, 'dashed_line_vertical.png'))
+        example_img = Image.open(os.path.join(LINE_IMG_PATH, 'dashed_line_vertical.jpg'))
         assert images_equal(generated_img, example_img), "Vertical dashed line rendering failed"
 
 @pytest.mark.asyncio
@@ -158,5 +158,5 @@ async def test_dashed_line_diagonal(image_gen, mock_tag_info):
         image_data = await generate_test_image(image_gen, service_data)
 
         generated_img = Image.open(BytesIO(image_data))
-        example_img = Image.open(os.path.join(LINE_IMG_PATH, 'dashed_line_diagonal.png'))
+        example_img = Image.open(os.path.join(LINE_IMG_PATH, 'dashed_line_diagonal.jpg'))
         assert images_equal(generated_img, example_img), "Dashed line diagonal rendering failed"

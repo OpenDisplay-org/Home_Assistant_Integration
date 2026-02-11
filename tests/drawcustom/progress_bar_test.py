@@ -34,7 +34,7 @@ async def test_basic_progress_bar(image_gen, mock_tag_info):
         image_data = await generate_test_image(image_gen, service_data)
 
         generated_img = Image.open(BytesIO(image_data))
-        example_img = Image.open(os.path.join(QR_CODE_IMG_PATH, 'progress_bar.png'))
+        example_img = Image.open(os.path.join(QR_CODE_IMG_PATH, 'progress_bar.jpg'))
         assert images_equal(generated_img, example_img), "Basic progress bar drawing failed"
 
 @pytest.mark.asyncio
@@ -62,7 +62,7 @@ async def test_progress_bar_zero_progress(image_gen, mock_tag_info):
         image_data = await generate_test_image(image_gen, service_data)
 
         generated_img = Image.open(BytesIO(image_data))
-        example_img = Image.open(os.path.join(QR_CODE_IMG_PATH, 'progress_bar_zero.png'))
+        example_img = Image.open(os.path.join(QR_CODE_IMG_PATH, 'progress_bar_zero.jpg'))
         assert images_equal(generated_img, example_img), "Basic progress bar drawing failed"
 
 @pytest.mark.asyncio
@@ -91,7 +91,7 @@ async def test_progress_bar_full(image_gen, mock_tag_info):
         image_data = await generate_test_image(image_gen, service_data)
 
         generated_img = Image.open(BytesIO(image_data))
-        example_img = Image.open(os.path.join(QR_CODE_IMG_PATH, 'progress_bar_full.png'))
+        example_img = Image.open(os.path.join(QR_CODE_IMG_PATH, 'progress_bar_full.jpg'))
         assert images_equal(generated_img, example_img), "Full progress bar drawing failed"
 
 @pytest.mark.asyncio
@@ -119,7 +119,7 @@ async def test_progress_bar_negative_progress(image_gen, mock_tag_info):
         image_data = await generate_test_image(image_gen, service_data)
 
         generated_img = Image.open(BytesIO(image_data))
-        example_img = Image.open(os.path.join(QR_CODE_IMG_PATH, 'progress_bar_zero.png'))
+        example_img = Image.open(os.path.join(QR_CODE_IMG_PATH, 'progress_bar_zero.jpg'))
         assert images_equal(generated_img, example_img), "Progress bar with negative percentage drawing failed"
 
 @pytest.mark.asyncio
@@ -148,7 +148,7 @@ async def test_progress_bar_over_full(image_gen, mock_tag_info):
         image_data = await generate_test_image(image_gen, service_data)
 
         generated_img = Image.open(BytesIO(image_data))
-        example_img = Image.open(os.path.join(QR_CODE_IMG_PATH, 'progress_bar_full.png'))
+        example_img = Image.open(os.path.join(QR_CODE_IMG_PATH, 'progress_bar_full.jpg'))
         assert images_equal(generated_img, example_img), "Over full progress bar drawing failed"
 
 @pytest.mark.asyncio
@@ -175,5 +175,5 @@ async def test_basic_progress_bar_percentage(image_gen, mock_tag_info):
         image_data = await generate_test_image(image_gen, service_data)
 
         generated_img = Image.open(BytesIO(image_data))
-        example_img = Image.open(os.path.join(QR_CODE_IMG_PATH, 'progress_bar_percentage.png'))
+        example_img = Image.open(os.path.join(QR_CODE_IMG_PATH, 'progress_bar_percentage.jpg'))
         assert images_equal(generated_img, example_img), "Basic progress bar with percentage drawing failed"

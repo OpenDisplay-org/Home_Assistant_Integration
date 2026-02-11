@@ -167,7 +167,7 @@ def images_equal(img1, img2):
 
 def save_image(image_bytes):
     """Save image for debugging."""
-    img_path = os.path.join(BASE_IMG_PATH, 'rename_me.png')
+    img_path = os.path.join(BASE_IMG_PATH, 'rename_me.jpg')
     with open(img_path, 'wb') as f:
         f.write(image_bytes)
 

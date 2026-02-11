@@ -26,7 +26,7 @@ async def test_polygon_basic(image_gen, mock_tag_info):
         image_data = await generate_test_image(image_gen, service_data)
 
         generated_img = Image.open(BytesIO(image_data))
-        example_img = Image.open(os.path.join(POLYGON_IMG_PATH, 'polygon_basic.png'))
+        example_img = Image.open(os.path.join(POLYGON_IMG_PATH, 'polygon_basic.jpg'))
         assert images_equal(generated_img, example_img), "Basic polygon rendering failed"
 
 @pytest.mark.asyncio
@@ -46,5 +46,5 @@ async def test_polygon_filled(image_gen, mock_tag_info):
                return_value=mock_tag_info):
         image_data = await generate_test_image(image_gen, service_data)
         generated_img = Image.open(BytesIO(image_data))
-        example_img = Image.open(os.path.join(POLYGON_IMG_PATH, 'polygon_filled.png'))
+        example_img = Image.open(os.path.join(POLYGON_IMG_PATH, 'polygon_filled.jpg'))
         assert images_equal(generated_img, example_img), "Filled polygon rendering failed"

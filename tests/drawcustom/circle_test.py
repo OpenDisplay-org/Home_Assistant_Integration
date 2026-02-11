@@ -31,7 +31,7 @@ async def test_circle_filled(image_gen, mock_tag_info):
         image_data = await generate_test_image(image_gen, service_data)
 
         generated_img = Image.open(BytesIO(image_data))
-        example_img = Image.open(os.path.join(CIRCLE_IMG_PATH, 'circle_filled.png'))
+        example_img = Image.open(os.path.join(CIRCLE_IMG_PATH, 'circle_filled.jpg'))
         assert images_equal(generated_img, example_img), "Basic filled circle rendering failed"
 
 @pytest.mark.asyncio
@@ -55,7 +55,7 @@ async def test_circle_outline(image_gen, mock_tag_info):
         image_data = await generate_test_image(image_gen, service_data)
 
         generated_img = Image.open(BytesIO(image_data))
-        example_img = Image.open(os.path.join(CIRCLE_IMG_PATH, 'circle_outline.png'))
+        example_img = Image.open(os.path.join(CIRCLE_IMG_PATH, 'circle_outline.jpg'))
         assert images_equal(generated_img, example_img), "Basic outline circle rendering failed"
 
 @pytest.mark.asyncio
@@ -80,5 +80,5 @@ async def test_circle_percentage(image_gen, mock_tag_info):
         image_data = await generate_test_image(image_gen, service_data)
 
         generated_img = Image.open(BytesIO(image_data))
-        example_img = Image.open(os.path.join(CIRCLE_IMG_PATH, 'circle_percentage.png'))
+        example_img = Image.open(os.path.join(CIRCLE_IMG_PATH, 'circle_percentage.jpg'))
         assert images_equal(generated_img, example_img), "Basic filled circle rendering failed"

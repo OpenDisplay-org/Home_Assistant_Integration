@@ -32,7 +32,7 @@ async def test_text_multiline_basic(image_gen, mock_tag_info):
 
         generated_img = Image.open(BytesIO(image_data))
 
-        example_img = Image.open(os.path.join(TEXT_MULTILINE_IMG_PATH, 'text_multiline.png'))
+        example_img = Image.open(os.path.join(TEXT_MULTILINE_IMG_PATH, 'text_multiline.jpg'))
         assert images_equal(generated_img, example_img), "Basic text rendering failed"
 
 @pytest.mark.asyncio
@@ -59,7 +59,7 @@ async def test_text_multiline_delimiter(image_gen, mock_tag_info):
 
         generated_img = Image.open(BytesIO(image_data))
 
-        example_img = Image.open(os.path.join(TEXT_MULTILINE_IMG_PATH, 'text_multiline_delimiter.png'))
+        example_img = Image.open(os.path.join(TEXT_MULTILINE_IMG_PATH, 'text_multiline_delimiter.jpg'))
         assert images_equal(generated_img, example_img), "Multiline text with delimiter rendering failed"
 
 @pytest.mark.asyncio
@@ -85,7 +85,7 @@ async def test_text_multiline_empty_line(image_gen, mock_tag_info):
         image_data = await generate_test_image(image_gen, service_data)
 
         generated_img = Image.open(BytesIO(image_data))
-        example_img = Image.open(os.path.join(TEXT_MULTILINE_IMG_PATH, 'multiline_empty_line.png'))
+        example_img = Image.open(os.path.join(TEXT_MULTILINE_IMG_PATH, 'multiline_empty_line.jpg'))
         assert images_equal(generated_img, example_img), "Multiline text with empty line rendering failed"
 
 @pytest.mark.asyncio
@@ -111,7 +111,7 @@ async def test_text_multiline_delimiter_and_newline(image_gen, mock_tag_info):
         image_data = await generate_test_image(image_gen, service_data)
 
         generated_img = Image.open(BytesIO(image_data))
-        example_img = Image.open(os.path.join(TEXT_MULTILINE_IMG_PATH, 'text_multiline_delimiter_and_newline.png'))
+        example_img = Image.open(os.path.join(TEXT_MULTILINE_IMG_PATH, 'text_multiline_delimiter_and_newline.jpg'))
         assert images_equal(generated_img, example_img), "Multiline text with delimiter and newline rendering failed"
 
 # @pytest.mark.asyncio
@@ -142,7 +142,7 @@ async def test_text_multiline_delimiter_and_newline(image_gen, mock_tag_info):
 #
 #         generated_img = Image.open(BytesIO(image_data))
 #         save_image(image_data)
-#         example_img = Image.open(os.path.join(TEXT_MULTILINE_IMG_PATH, 'calendar_format.png'))
+#         example_img = Image.open(os.path.join(TEXT_MULTILINE_IMG_PATH, 'calendar_format.jpg'))
 #         assert images_equal(generated_img, example_img), "Calendar format multiline rendering failed"
 #
 # @pytest.mark.asyncio
@@ -172,7 +172,7 @@ async def test_text_multiline_delimiter_and_newline(image_gen, mock_tag_info):
 #         )
 #
 #         generated_img = Image.open(BytesIO(image_data))
-#         example_img = Image.open(os.path.join(TEXT_MULTILINE_IMG_PATH, 'multiline_blank_lines.png'))
+#         example_img = Image.open(os.path.join(TEXT_MULTILINE_IMG_PATH, 'multiline_blank_lines.jpg'))
 #         assert images_equal(generated_img, example_img), "Multiline text with blank lines rendering failed"
 #
 # @pytest.mark.asyncio
@@ -202,5 +202,5 @@ async def test_text_multiline_delimiter_and_newline(image_gen, mock_tag_info):
 #         )
 #
 #         generated_img = Image.open(BytesIO(image_data))
-#         example_img = Image.open(os.path.join(TEXT_MULTILINE_IMG_PATH, 'multiline_whitespace.png'))
+#         example_img = Image.open(os.path.join(TEXT_MULTILINE_IMG_PATH, 'multiline_whitespace.jpg'))
 #         assert images_equal(generated_img, example_img), "Multiline text whitespace handling failed"

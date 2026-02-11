@@ -31,7 +31,7 @@ async def test_text_basic(image_gen, mock_tag_info):
         image_data = await generate_test_image(image_gen, service_data)
 
         generated_img = Image.open(BytesIO(image_data))
-        example_img = Image.open(os.path.join(TEXT_IMG_PATH, 'text_basic.png'))
+        example_img = Image.open(os.path.join(TEXT_IMG_PATH, 'text_basic.jpg'))
         assert images_equal(generated_img, example_img), "Basic text rendering failed"
 
 
@@ -55,7 +55,7 @@ async def test_small_font_size(image_gen, mock_tag_info):
         image_data = await generate_test_image(image_gen, service_data)
 
         generated_img = Image.open(BytesIO(image_data))
-        example_img = Image.open(os.path.join(TEXT_IMG_PATH, 'small_font.png'))
+        example_img = Image.open(os.path.join(TEXT_IMG_PATH, 'small_font.jpg'))
         assert images_equal(generated_img, example_img), "Small font size rendering failed"
 
 
@@ -79,7 +79,7 @@ async def test_large_font_size(image_gen, mock_tag_info):
         image_data = await generate_test_image(image_gen, service_data)
 
         generated_img = Image.open(BytesIO(image_data))
-        example_img = Image.open(os.path.join(TEXT_IMG_PATH, 'large_font.png'))
+        example_img = Image.open(os.path.join(TEXT_IMG_PATH, 'large_font.jpg'))
         assert images_equal(generated_img, example_img), "Large font size rendering failed"
 
 
@@ -104,7 +104,7 @@ async def test_text_wrapping(image_gen, mock_tag_info):
         image_data = await generate_test_image(image_gen, service_data)
 
         generated_img = Image.open(BytesIO(image_data))
-        example_img = Image.open(os.path.join(TEXT_IMG_PATH, 'text_wrapping.png'))
+        example_img = Image.open(os.path.join(TEXT_IMG_PATH, 'text_wrapping.jpg'))
         assert images_equal(generated_img, example_img), "Text wrapping failed"
 
 async def test_text_wrapping_with_anchor(image_gen, mock_tag_info):
@@ -130,7 +130,7 @@ async def test_text_wrapping_with_anchor(image_gen, mock_tag_info):
 
         generated_img = Image.open(BytesIO(image_data))
         save_image(image_data)
-        example_img = Image.open(os.path.join(TEXT_IMG_PATH, 'text_wrapping_anchor.png'))
+        example_img = Image.open(os.path.join(TEXT_IMG_PATH, 'text_wrapping_anchor.jpg'))
         assert images_equal(generated_img, example_img), "Text wrapping failed"
 
 
@@ -161,7 +161,7 @@ async def test_text_with_special_characters(image_gen, mock_tag_info):
         image_data = await generate_test_image(image_gen, service_data)
 
         generated_img = Image.open(BytesIO(image_data))
-        example_img = Image.open(os.path.join(TEXT_IMG_PATH, 'text_special_chars.png'))
+        example_img = Image.open(os.path.join(TEXT_IMG_PATH, 'text_special_chars.jpg'))
         assert images_equal(generated_img, example_img), "Special characters rendering failed"
 
 
@@ -195,7 +195,7 @@ async def test_text_color_markup(image_gen, mock_tag_info):
         image_data = await generate_test_image(image_gen, service_data)
 
         generated_img = Image.open(BytesIO(image_data))
-        example_img = Image.open(os.path.join(TEXT_IMG_PATH, 'text_color_markup.png'))
+        example_img = Image.open(os.path.join(TEXT_IMG_PATH, 'text_color_markup.jpg'))
         assert images_equal(generated_img, example_img), "Color markup rendering failed"
 
 @pytest.mark.asyncio
@@ -220,7 +220,7 @@ async def test_text_percentage(image_gen, mock_tag_info):
         image_data = await generate_test_image(image_gen, service_data)
 
         generated_img = Image.open(BytesIO(image_data))
-        example_img = Image.open(os.path.join(TEXT_IMG_PATH, 'text_percentage.png'))
+        example_img = Image.open(os.path.join(TEXT_IMG_PATH, 'text_percentage.jpg'))
         assert images_equal(generated_img, example_img), "Text with percentage rendering failed"
 
 # @pytest.mark.asyncio
@@ -266,7 +266,7 @@ async def test_text_percentage(image_gen, mock_tag_info):
 #
 #         generated_img = Image.open(BytesIO(image_data))
 #         save_image(image_data)
-#         example_img = Image.open(os.path.join(TEXT_IMG_PATH, 'text_alignment.png'))
+#         example_img = Image.open(os.path.join(TEXT_IMG_PATH, 'text_alignment.jpg'))
 #         assert images_equal(generated_img, example_img), "Text alignment failed"
 
 @pytest.mark.asyncio
@@ -311,7 +311,7 @@ async def test_text_anchors(image_gen, mock_tag_info):
         image_data = await generate_test_image(image_gen, service_data)
 
         generated_img = Image.open(BytesIO(image_data))
-        example_img = Image.open(os.path.join(TEXT_IMG_PATH, 'text_anchors.png'))
+        example_img = Image.open(os.path.join(TEXT_IMG_PATH, 'text_anchors.jpg'))
         assert images_equal(generated_img, example_img), "Text anchor points failed"
 
 @pytest.mark.asyncio
@@ -346,7 +346,7 @@ async def test_text_mixed_fonts(image_gen, mock_tag_info):
         image_data = await generate_test_image(image_gen, service_data)
 
         generated_img = Image.open(BytesIO(image_data))
-        example_img = Image.open(os.path.join(TEXT_IMG_PATH, 'text_mixed_fonts.png'))
+        example_img = Image.open(os.path.join(TEXT_IMG_PATH, 'text_mixed_fonts.jpg'))
         assert images_equal(generated_img, example_img), "Mixed fonts rendering failed"
 
 @pytest.mark.asyncio
@@ -370,7 +370,7 @@ async def test_text_empty_string(image_gen, mock_tag_info):
         image_data = await generate_test_image(image_gen, service_data)
 
         generated_img = Image.open(BytesIO(image_data))
-        example_img = Image.open(os.path.join(BASE_IMG_PATH, 'blank.png'))
+        example_img = Image.open(os.path.join(BASE_IMG_PATH, 'blank.jpg'))
         assert images_equal(generated_img, example_img), "Empty text handling failed"
 
 async def test_text_truncate(image_gen, mock_tag_info):
@@ -395,7 +395,7 @@ async def test_text_truncate(image_gen, mock_tag_info):
         image_data = await generate_test_image(image_gen, service_data)
 
         generated_img = Image.open(BytesIO(image_data))
-        example_img = Image.open(os.path.join(TEXT_IMG_PATH, 'text_truncate.png'))
+        example_img = Image.open(os.path.join(TEXT_IMG_PATH, 'text_truncate.jpg'))
         assert images_equal(generated_img, example_img), "Text truncation failed"
 
 # @pytest.mark.asyncio
@@ -445,5 +445,5 @@ async def test_text_truncate(image_gen, mock_tag_info):
 #         )
 #
 #         generated_img = Image.open(BytesIO(image_data))
-#         example_img = Image.open(os.path.join(TEXT_IMG_PATH, 'text_basic.png'))
+#         example_img = Image.open(os.path.join(TEXT_IMG_PATH, 'text_basic.jpg'))
 #         assert images_equal(generated_img, example_img), "Basic text rendering failed"

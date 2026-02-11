@@ -26,7 +26,7 @@ async def test_debug_grid_basic(image_gen, mock_tag_info):
         image_data = await generate_test_image(image_gen, service_data)
 
         generated_img = Image.open(BytesIO(image_data))
-        example_img = Image.open(os.path.join(DEBUG_GRID_IMG_PATH, 'debug_grid_basic.png'))
+        example_img = Image.open(os.path.join(DEBUG_GRID_IMG_PATH, 'debug_grid_basic.jpg'))
         assert images_equal(generated_img, example_img), "Basic debug grid rendering failed"
 
 @pytest.mark.asyncio
@@ -47,7 +47,7 @@ async def test_debug_grid_custom_spacing(image_gen, mock_tag_info):
         image_data = await generate_test_image(image_gen, service_data)
 
         generated_img = Image.open(BytesIO(image_data))
-        example_img = Image.open(os.path.join(DEBUG_GRID_IMG_PATH, 'debug_grid_custom_spacing.png'))
+        example_img = Image.open(os.path.join(DEBUG_GRID_IMG_PATH, 'debug_grid_custom_spacing.jpg'))
         assert images_equal(generated_img, example_img), "Custom spacing debug grid rendering failed"
 
 @pytest.mark.asyncio
@@ -71,7 +71,7 @@ async def test_debug_grid_solid(image_gen, mock_tag_info):
         image_data = await generate_test_image(image_gen, service_data)
 
         generated_img = Image.open(BytesIO(image_data))
-        example_img = Image.open(os.path.join(DEBUG_GRID_IMG_PATH, 'debug_grid_solid.png'))
+        example_img = Image.open(os.path.join(DEBUG_GRID_IMG_PATH, 'debug_grid_solid.jpg'))
         assert images_equal(generated_img, example_img), "Solid debug grid rendering failed"
 
 @pytest.mark.asyncio
@@ -91,5 +91,5 @@ async def test_debug_grid_without_labels(image_gen, mock_tag_info):
         image_data = await generate_test_image(image_gen, service_data)
 
         generated_img = Image.open(BytesIO(image_data))
-        example_img = Image.open(os.path.join(DEBUG_GRID_IMG_PATH, 'debug_grid_without_labels.png'))
+        example_img = Image.open(os.path.join(DEBUG_GRID_IMG_PATH, 'debug_grid_without_labels.jpg'))
         assert images_equal(generated_img, example_img), "Debug grid without labels rendering failed"

@@ -32,7 +32,7 @@ async def test_basic_qr_code(image_gen, mock_tag_info):
         image_data = await generate_test_image(image_gen, service_data)
 
         generated_img = Image.open(BytesIO(image_data))
-        example_img = Image.open(os.path.join(QR_CODE_IMG_PATH, 'qr_code.png'))
+        example_img = Image.open(os.path.join(QR_CODE_IMG_PATH, 'qr_code.jpg'))
         assert images_equal(generated_img, example_img), "Basic qr code drawing failed"
 
 @pytest.mark.asyncio
@@ -59,7 +59,7 @@ async def test_long_qr_code(image_gen, mock_tag_info):
         image_data = await generate_test_image(image_gen, service_data)
 
         generated_img = Image.open(BytesIO(image_data))
-        example_img = Image.open(os.path.join(QR_CODE_IMG_PATH, 'qr_code_long.png'))
+        example_img = Image.open(os.path.join(QR_CODE_IMG_PATH, 'qr_code_long.jpg'))
         assert images_equal(generated_img, example_img), "Long qr code drawing failed"
 
 @pytest.mark.asyncio
@@ -85,5 +85,5 @@ async def test_basic_qr_code_percentage(image_gen, mock_tag_info):
         image_data = await generate_test_image(image_gen, service_data)
 
         generated_img = Image.open(BytesIO(image_data))
-        example_img = Image.open(os.path.join(QR_CODE_IMG_PATH, 'qr_code_percentage.png'))
+        example_img = Image.open(os.path.join(QR_CODE_IMG_PATH, 'qr_code_percentage.jpg'))
         assert images_equal(generated_img, example_img), "Basic qr code drawing with percentage failed"

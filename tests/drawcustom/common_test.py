@@ -30,7 +30,7 @@ async def test_multiple_elements(image_gen, mock_tag_info):
         image_data = await generate_test_image(image_gen, service_data)
 
         generated_img = Image.open(BytesIO(image_data))
-        example_img = Image.open(os.path.join(COMMON_IMG_PATH, 'multiple_elements.png'))
+        example_img = Image.open(os.path.join(COMMON_IMG_PATH, 'multiple_elements.jpg'))
         assert images_equal(generated_img, example_img), "Multiple elements drawing failed"
 
 @pytest.mark.asyncio
@@ -56,7 +56,7 @@ async def test_rotation(image_gen, mock_tag_info):
         image_data = await generate_test_image(image_gen, service_data)
 
         generated_img = Image.open(BytesIO(image_data))
-        example_img = Image.open(os.path.join(COMMON_IMG_PATH, 'rotated.png'))
+        example_img = Image.open(os.path.join(COMMON_IMG_PATH, 'rotated.jpg'))
         assert images_equal(generated_img, example_img), "rotated elements drawing failed"
 
 @pytest.mark.asyncio
@@ -76,7 +76,7 @@ async def test_oversize_elements(image_gen, mock_tag_info):
         image_data = await generate_test_image(image_gen, service_data)
 
         generated_img = Image.open(BytesIO(image_data))
-        example_img = Image.open(os.path.join(COMMON_IMG_PATH, 'oversize_elements.png'))
+        example_img = Image.open(os.path.join(COMMON_IMG_PATH, 'oversize_elements.jpg'))
         assert images_equal(generated_img, example_img), "Oversize elements drawing failed"
 
 @pytest.mark.asyncio
@@ -97,7 +97,7 @@ async def test_overlapping_elements(image_gen, mock_tag_info):
         image_data = await generate_test_image(image_gen, service_data)
 
         generated_img = Image.open(BytesIO(image_data))
-        example_img = Image.open(os.path.join(COMMON_IMG_PATH, 'overlapping_elements.png'))
+        example_img = Image.open(os.path.join(COMMON_IMG_PATH, 'overlapping_elements.jpg'))
         assert images_equal(generated_img, example_img), "Overlapping elements drawing failed"
 
 @pytest.mark.asyncio
@@ -117,5 +117,5 @@ async def test_negative_coordinates(image_gen, mock_tag_info):
         image_data = await generate_test_image(image_gen, service_data)
 
         generated_img = Image.open(BytesIO(image_data))
-        example_img = Image.open(os.path.join(COMMON_IMG_PATH, 'negative_coordinates.png'))
+        example_img = Image.open(os.path.join(COMMON_IMG_PATH, 'negative_coordinates.jpg'))
         assert images_equal(generated_img, example_img), "Negative coordinate elements drawing failed"

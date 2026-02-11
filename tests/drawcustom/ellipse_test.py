@@ -32,7 +32,7 @@ async def test_circle_ellipse(image_gen, mock_tag_info):
         image_data = await generate_test_image(image_gen, service_data)
 
         generated_img = Image.open(BytesIO(image_data))
-        example_img = Image.open(os.path.join(ELLIPSE_IMG_PATH, 'ellipse_drawing.png'))
+        example_img = Image.open(os.path.join(ELLIPSE_IMG_PATH, 'ellipse_drawing.jpg'))
         assert images_equal(generated_img, example_img), "Basic ellipse drawing failed"
 
 @pytest.mark.asyncio
@@ -58,5 +58,5 @@ async def test_circle_ellipse_percentage(image_gen, mock_tag_info):
         image_data = await generate_test_image(image_gen, service_data)
 
         generated_img = Image.open(BytesIO(image_data))
-        example_img = Image.open(os.path.join(ELLIPSE_IMG_PATH, 'ellipse_drawing_percentage.png'))
+        example_img = Image.open(os.path.join(ELLIPSE_IMG_PATH, 'ellipse_drawing_percentage.jpg'))
         assert images_equal(generated_img, example_img), "Basic ellipse drawing failed"

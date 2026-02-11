@@ -36,7 +36,7 @@ async def test_rectangle_pattern(image_gen, mock_tag_info):
         image_data = await generate_test_image(image_gen, service_data)
 
         generated_img = Image.open(BytesIO(image_data))
-        example_img = Image.open(os.path.join(RECTANGLE_IMG_PATH, 'rectangle_pattern.png'))
+        example_img = Image.open(os.path.join(RECTANGLE_IMG_PATH, 'rectangle_pattern.jpg'))
         assert images_equal(generated_img, example_img), "Rectangle pattern rendering failed"
 
 @pytest.mark.asyncio
@@ -68,7 +68,7 @@ async def test_rectangle_pattern_rounded_corners(image_gen, mock_tag_info):
         image_data = await generate_test_image(image_gen, service_data)
 
         generated_img = Image.open(BytesIO(image_data))
-        example_img = Image.open(os.path.join(RECTANGLE_IMG_PATH, 'rectangle_pattern_rounded_corners.png'))
+        example_img = Image.open(os.path.join(RECTANGLE_IMG_PATH, 'rectangle_pattern_rounded_corners.jpg'))
         assert images_equal(generated_img, example_img), "Rounded corner rectangle pattern rendering failed"
 
 @pytest.mark.asyncio
@@ -98,5 +98,5 @@ async def test_rectangle_pattern(image_gen, mock_tag_info):
         image_data = await generate_test_image(image_gen, service_data)
 
         generated_img = Image.open(BytesIO(image_data))
-        example_img = Image.open(os.path.join(BASE_IMG_PATH, 'blank.png'))
+        example_img = Image.open(os.path.join(BASE_IMG_PATH, 'blank.jpg'))
         assert images_equal(generated_img, example_img), "Rounded corner rectangle pattern rendering failed"
