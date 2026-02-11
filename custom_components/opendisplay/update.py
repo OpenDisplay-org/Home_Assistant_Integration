@@ -23,8 +23,8 @@ from .util import is_ble_entry
 
 _LOGGER = logging.getLogger(__name__)
 
-GITHUB_LATEST_URL = "https://api.github.com/repos/OpenDisplay/OpenDisplay_BLE/releases/latest"
-DEFAULT_RELEASE_URL = "https://github.com/OpenDisplay/OpenDisplay_BLE/releases"
+GITHUB_LATEST_URL = "https://api.github.com/repos/OpenDisplay-org/Firmware/releases/latest"
+DEFAULT_RELEASE_URL = "https://github.com/OpenDisplay-org/Firmware/releases"
 CACHE_DURATION = timedelta(hours=6)
 
 
