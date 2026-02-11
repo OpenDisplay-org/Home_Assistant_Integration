@@ -1,0 +1,233 @@
+name: Sync Tag Type Definitions
+
+on:
+  # Run weekly on Monday at 00:00 UTC
+  schedule:
+    - cron: '0 0 * * 1'
+  
+  # Allow manual trigger
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  sync-tag-definitions:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      
+      - name: Fetch tag type definitions from OpenEPaperLink
+        id: fetch
+        run: |
+          python3 << 'PYEOF'
+          import urllib.request
+          import json
+          import re
+          
+          print("Fetching tag type files from OpenEPaperLink repository...")
+          
+          # Fetch the directory listing
+          url = "https://github.com/OpenEPaperLink/OpenEPaperLink/tree/master/resources/tagtypes"
+          headers = {'User-Agent': 'Mozilla/5.0'}
+          req = urllib.request.Request(url, headers=headers)
+          
+          try:
+              with urllib.request.urlopen(req, timeout=30) as response:
+                  html = response.read().decode('utf-8')
+                  json_files = re.findall(r'([0-9a-fA-F]+\.json)', html)
+                  json_files = sorted(set(json_files))
+                  print(f"Found {len(json_files)} tag type files")
+          except Exception as e:
+              print(f"Error fetching file list: {e}")
+              exit(1)
+          
+          # Fetch all tag type definitions
+          tag_types = {}
+          errors = []
+          
+          for filename in json_files:
+              url = f"https://raw.githubusercontent.com/OpenEPaperLink/OpenEPaperLink/master/resources/tagtypes/{filename}"
+              try:
+                  with urllib.request.urlopen(url, timeout=10) as response:
+                      data = json.loads(response.read().decode('utf-8'))
+                      type_id = int(filename.replace('.json', ''), 16)
+                      
+                      # Extract only required fields
+                      tag_types[type_id] = {
+                          'version': data.get('version'),
+                          'name': data.get('name'),
+                          'width': data.get('width'),
+                          'height': data.get('height'),
+                      }
+              except Exception as e:
+                  errors.append(f"Error fetching {filename}: {e}")
+          
+          if errors:
+              for error in errors:
+                  print(error)
+          
+          print(f"Successfully fetched {len(tag_types)} tag type definitions")
+          
+          # Save to file for next step
+          with open('new_tag_types.json', 'w') as f:
+              json.dump(tag_types, f, indent=2)
+          
+          print("Tag types saved to new_tag_types.json")
+          PYEOF
+      
+      - name: Generate updated tag_types.py
+        id: generate
+        run: |
+          python3 << 'PYEOF'
+          import json
+          import re
+          
+          # Load new tag types
+          with open('new_tag_types.json', 'r') as f:
+              new_tag_types = json.load(f)
+          
+          # Read current tag_types.py
+          with open('custom_components/opendisplay/tag_types.py', 'r') as f:
+              content = f.read()
+          
+          # Extract current fallback definitions
+          match = re.search(r'fallback_definitions = \{(.*?)\n        \}', content, re.DOTALL)
+          if not match:
+              print("Error: Could not find fallback_definitions in tag_types.py")
+              exit(1)
+          
+          current_definitions = match.group(1)
+          
+          # Parse current definitions to dict
+          current_types = {}
+          for line in current_definitions.split('\n'):
+              match = re.match(r'\s+(\d+):', line)
+              if match:
+                  type_id = int(match.group(1))
+                  current_types[type_id] = line.strip()
+          
+          print(f"Current definitions: {len(current_types)} types")
+          print(f"New definitions: {len(new_tag_types)} types")
+          
+          # Check if there are differences
+          changed = False
+          added = []
+          removed = []
+          modified = []
+          
+          # Find added and modified
+          for type_id in sorted(new_tag_types.keys()):
+              if type_id not in current_types:
+                  added.append(type_id)
+                  changed = True
+              else:
+                  # Compare values
+                  new_line = f'{type_id}: {json.dumps(new_tag_types[str(type_id)])}'
+                  if new_line not in current_types[type_id]:
+                      modified.append(type_id)
+                      changed = True
+          
+          # Find removed
+          for type_id in current_types:
+              if str(type_id) not in new_tag_types and type_id not in [int(k) for k in new_tag_types.keys()]:
+                  removed.append(type_id)
+                  changed = True
+          
+          # Generate new fallback_definitions content
+          lines = []
+          for type_id in sorted([int(k) for k in new_tag_types.keys()]):
+              type_data = new_tag_types[str(type_id)]
+              line = f'            {type_id}: {json.dumps(type_data)},'
+              lines.append(line)
+          
+          new_fallback = '\n'.join(lines)
+          
+          # Replace in content
+          new_content = re.sub(
+              r'(fallback_definitions = \{)\n.*?\n(        \})',
+              r'\1\n' + new_fallback + '\n\2',
+              content,
+              flags=re.DOTALL
+          )
+          
+          # Write updated file
+          with open('custom_components/opendisplay/tag_types.py', 'w') as f:
+              f.write(new_content)
+          
+          # Create summary
+          summary = []
+          if added:
+              summary.append(f"Added: {len(added)} types ({', '.join(map(str, added[:5]))}{'...' if len(added) > 5 else ''})")
+          if removed:
+              summary.append(f"Removed: {len(removed)} types ({', '.join(map(str, removed[:5]))}{'...' if len(removed) > 5 else ''})")
+          if modified:
+              summary.append(f"Modified: {len(modified)} types ({', '.join(map(str, modified[:5]))}{'...' if len(modified) > 5 else ''})")
+          
+          if changed:
+              print("CHANGED=true")
+              print(f"SUMMARY={'|'.join(summary)}")
+              with open('CHANGES_SUMMARY.txt', 'w') as f:
+                  f.write('\n'.join(summary))
+          else:
+              print("CHANGED=false")
+              print("No changes detected")
+          
+          # Set output for GitHub Actions
+          import os
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as f:
+              f.write(f"changed={'true' if changed else 'false'}\n")
+              if summary:
+                  f.write(f"summary={'|'.join(summary)}\n")
+          PYEOF
+      
+      - name: Create Pull Request
+        if: steps.generate.outputs.changed == 'true'
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: 'Update tag type definitions from OpenEPaperLink'
+          title: 'chore: Update tag type definitions from OpenEPaperLink'
+          body: |
+            This PR automatically updates the fallback tag type definitions to match the latest definitions from the OpenEPaperLink repository.
+            
+            ## Changes
+            
+            ${{ steps.generate.outputs.summary }}
+            
+            ## Source
+            
+            Definitions fetched from: https://github.com/OpenEPaperLink/OpenEPaperLink/tree/master/resources/tagtypes
+            
+            ## Notes
+            
+            - Only required fields are included: `version`, `name`, `width`, `height`
+            - Optional fields (`bpp`, `rotatebuffer`) use defaults from TagType class
+            
+            ---
+            
+            *This PR was automatically created by the sync-tag-definitions workflow*
+          branch: 'automated/sync-tag-definitions'
+          delete-branch: true
+          labels: |
+            automated
+            dependencies
+      
+      - name: Summary
+        run: |
+          if [ "${{ steps.generate.outputs.changed }}" == "true" ]; then
+            echo "✅ Changes detected - PR created"
+            echo "${{ steps.generate.outputs.summary }}"
+          else
+            echo "✅ No changes detected - definitions are up to date"
+          fi
