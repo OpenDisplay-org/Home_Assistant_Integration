@@ -1,5 +1,5 @@
 {
-    "name": "open_epaper_link_homeassistant",
+    "name": "opendisplay_homeassistant",
     "image": "mcr.microsoft.com/vscode/devcontainers/python:3.12-bullseye",
     "postCreateCommand": "scripts/setup",
     "forwardPorts": [

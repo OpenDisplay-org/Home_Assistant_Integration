@@ -164,7 +164,7 @@ lib64
 # Home Assistant configuration
 config/
 
-custom_components/open_epaper_link/*.jpg
-custom_components/open_epaper_link/lastapinteraction.txt
+custom_components/opendisplay/*.jpg
+custom_components/opendisplay/lastapinteraction.txt
 
 tests/drawcustom/test_images/rename_me.png
