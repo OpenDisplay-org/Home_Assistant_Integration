@@ -8,7 +8,7 @@ from homeassistant.helpers.dispatcher import async_dispatcher_connect
 from homeassistant.helpers.entity import DeviceInfo, Entity
 from .ble import BLEDeviceMetadata
 
-from .const import DOMAIN, OEPL_CONFIG_URL, ATC_CONFIG_URL
+from .const import DOMAIN, OPENDISPLAY_CONFIG_URL, ATC_CONFIG_URL
 from .tag_types import get_hw_string, get_hw_dimensions
 
 if TYPE_CHECKING:
@@ -195,7 +195,7 @@ class OpenDisplayBLEEntity(Entity):
         }
 
         if metadata.is_open_display:
-            device_info["configuration_url"] = OEPL_CONFIG_URL
+            device_info["configuration_url"] = OPENDISPLAY_CONFIG_URL
         else:
             device_info["configuration_url"] = ATC_CONFIG_URL
 

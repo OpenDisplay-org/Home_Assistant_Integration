@@ -6,7 +6,7 @@
       "extra-files": [
         {
           "type": "json",
-          "path": "custom_components/open_epaper_link/manifest.json",
+          "path": "custom_components/opendisplay/manifest.json",
           "jsonpath": "$.version"
         }
       ]
